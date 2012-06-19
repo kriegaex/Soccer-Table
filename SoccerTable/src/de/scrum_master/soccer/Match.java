@@ -32,7 +32,6 @@ public class Match implements Comparable<Match>
 		return id;
 	}
 
-	@Override
 	public int compareTo(Match match)
 	{
 		int result = date.compareTo(match.date);

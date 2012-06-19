@@ -12,7 +12,6 @@ public class Config
 	{
 		Config config = new Config();
 		config.initialiseGroups();
-		config.updateTables();
 		config.printGroups();
 	}
 
@@ -23,12 +22,6 @@ public class Config
 		initialiseGroup_B();
 		initialiseGroup_C();
 		initialiseGroup_D();
-	}
-
-	private void updateTables()
-	{
-		for (Group group : groups)
-			group.updateTable();
 	}
 
 	private void printGroups()

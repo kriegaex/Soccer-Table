@@ -23,8 +23,9 @@ public class Group implements Comparable<Group>
 		this.name = name;
 	}
 
-	public void updateTable()
+	public void refreshTable()
 	{
+		// Create new Table without subtable ranking, general points/goals only
 		table = new Table();
 		for (Team team: teams)
 			table.rows.add(new TableRow(team, matches));
@@ -32,17 +33,71 @@ public class Group implements Comparable<Group>
 
 	public void printTable()
 	{
-		table = new Table();
-		for (Team team : teams)
-			table.rows.add(new TableRow(team, matches));
-		int pointsPrevious = -1;
+		refreshTable();
+		Table rankedTable = new Table();
 		Table subTable = new Table();
+		int currentPoints = -1;
+		int currentRank = 1;
+		for (TableRow row : table.rows) {
+			System.out.println("### " + row);
+			if (row.getPoints() == currentPoints) {
+				subTable.rows.add(new TableRow(row.team, row.matches));
+				continue;
+			}
+			currentRank = integrateSubTable(rankedTable, subTable, currentRank);
+			subTable.rows.add(row);
+			currentPoints = row.getPoints(); 
+		}
+		currentRank = integrateSubTable(rankedTable, subTable, currentRank);
+		table = rankedTable;
+		System.out.println();
 		for (TableRow row : table.rows) {
 			System.out.println(row);
 		}
 	}
 
-	@Override
+	private int integrateSubTable(Table rankedTable, Table subTable,
+		int currentRank)
+	{
+		if (subTable.rows.size() > 1)
+			System.out.println("  Subtable:");
+		SortedSet<Team> subTableTeams = new TreeSet<Team>();
+		SortedSet<Match> subTableMatches = new TreeSet<Match>();
+
+		// Gather sub-table teams
+		for (TableRow subRow : subTable.rows)
+			subTableTeams.add(subRow.team);
+
+		// Gather sub-table matches
+		for (Match subMatch : matches) {
+			if (subTableTeams.contains(subMatch.homeTeam) && subTableTeams.contains(subMatch.guestTeam))
+				subTableMatches.add(subMatch);
+		}
+
+		// Update match list for all sub-table rows
+		TableRow[] subTableCopy = new TableRow[subTable.rows.size()];
+		subTable.rows.toArray(subTableCopy); 
+		for (TableRow subRow : subTableCopy) {
+			subRow.matches = subTableMatches;
+			subRow.updateMatchStatistics();
+			if (subTable.rows.size() > 1)
+				System.out.println("  " + subRow);
+		}
+		subTable.rows.clear();
+		for (TableRow subRow : subTableCopy) {
+			subTable.rows.add(subRow);
+		}
+
+		for (TableRow subRow : subTable.rows) {
+			TableRow clonedRow = new TableRow(subRow.team, matches);
+			clonedRow.setRank(currentRank++);
+			// TODO: take care of identical ranks
+			rankedTable.rows.add(clonedRow);
+		}
+		subTable.rows.clear();
+		return currentRank;
+	}
+
 	public int compareTo(Group group)
 	{
 		return id.compareTo(group.id);

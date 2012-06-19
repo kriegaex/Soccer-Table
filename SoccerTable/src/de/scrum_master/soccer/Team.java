@@ -17,7 +17,6 @@ public class Team implements Comparable<Team>
 		this.name = name;
 	}
 
-	@Override
 	public int compareTo(Team team)
 	{
 		return id.compareTo(team.id);

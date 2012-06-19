@@ -8,6 +8,7 @@ public class TableRow implements Comparable<TableRow>
 	public Team team;
 	public SortedSet<Match> matches = new TreeSet<Match>();
 
+	private int rank            = 0;  // set by Group while sorting ###
 	private int points          = 0;  // redundant
 	private int matchesPlayed   = 0;
 	private int matchesWon      = 0;
@@ -21,6 +22,20 @@ public class TableRow implements Comparable<TableRow>
 	{
 		this.team = team;
 		this.matches = matches;
+		updateMatchStatistics();
+	}
+
+	public void updateMatchStatistics()
+	{
+		rank            = 0;
+		points          = 0;
+		matchesPlayed   = 0;
+		matchesWon      = 0;
+		matchesDrawn    = 0;
+		matchesLost     = 0;
+		goalsFor        = 0;
+		goalsAgainst    = 0;
+		goalsDifference = 0;
 
 		for (Match match : matches) {
 			if (
@@ -64,30 +79,37 @@ public class TableRow implements Comparable<TableRow>
 		}
 	}
 
-	@Override
 	public int compareTo(TableRow other)
 	{
-		// Attention: sort order is *descending*
+		// Sort order: ascending by rank (if != 0), then descending by points/goals
 
-		// Points difference
-		if (points > other.points)
-			return -1;
-		else if (points < other.points)
-			return 1;
+		// Rank (if calculated already)
+		if (rank > 0 && other.rank > 0) {
+			if (rank < other.rank)
+				return -1;
+			if (rank > other.rank)
+				return 1;
+		} else {
+			// Points difference
+			if (points > other.points)
+				return -1;
+			if (points < other.points)
+				return 1;
 
-		// Goals difference
-		if (goalsDifference > other.goalsDifference)
-			return -1;
-		else if (goalsDifference < other.goalsDifference)
-			return 1;
+			// Goals difference
+			if (goalsDifference > other.goalsDifference)
+				return -1;
+			if (goalsDifference < other.goalsDifference)
+				return 1;
 
-		// Goals scored
-		if (goalsFor > other.goalsFor)
-			return -1;
-		else if (goalsFor < other.goalsFor)
-			return 1;
+			// Goals scored
+			if (goalsFor > other.goalsFor)
+				return -1;
+			if (goalsFor < other.goalsFor)
+				return 1;
 
-		// TODO: UEFA coefficient, fair-play score
+			// TODO: UEFA coefficient, fair-play score
+		}
 
 		// If TableRows are part of a [Sorted]Set, their team IDs differentiate them
 		// even if the scores are identical. Otherwise it would be impossible to have
@@ -95,13 +117,28 @@ public class TableRow implements Comparable<TableRow>
 		return team.id.compareTo(other.team.id);
 	}
 
+	public int getRank()
+	{
+		return rank;
+	}
+
+	public void setRank(int rank)
+	{
+		this.rank = rank;
+	}
+
+	public int getPoints()
+	{
+		return points;
+	}
+
 	@Override
 	public String toString()
 	{
-		return "TableRow [team=" + team + ", points=" + points +
-			", matchesPlayed=" + matchesPlayed + ", matchesWon=" + matchesWon +
-			", matchesDrawn=" + matchesDrawn + ", matchesLost=" + matchesLost +
-			", goalsFor=" + goalsFor + ", goalsAgainst=" + goalsAgainst +
-			", goalDifference=" + goalsDifference + "]";
+		return "TableRow [team=" + team + ", rank=" + rank + ", points=" +
+			points + ", matchesPlayed=" + matchesPlayed + ", matchesWon=" +
+			matchesWon + ", matchesDrawn=" + matchesDrawn + ", matchesLost=" +
+			matchesLost + ", goalsFor=" + goalsFor + ", goalsAgainst=" +
+			goalsAgainst + ", goalsDifference=" + goalsDifference + "]";
 	}
 }
