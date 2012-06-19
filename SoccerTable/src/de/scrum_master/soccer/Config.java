@@ -268,13 +268,13 @@ public class Config
 			new GregorianCalendar(2012, 6, 19, 20, 45),
 			group.getTeam("SWE"),
 			group.getTeam("FRA"),
-			-1, -1
+			2, 0
 		));
 		group.matches.add(new Match(
 			new GregorianCalendar(2012, 6, 19, 20, 45),
 			group.getTeam("ENG"),
 			group.getTeam("UKR"),
-			-1, -1
+			1, 0
 		));
 	}
 }
