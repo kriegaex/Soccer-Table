@@ -60,7 +60,7 @@ public class Table
 			}
 		}
 
-		if (subTable.rows.size() > 1) {
+		if (Config.DEBUG && subTable.rows.size() > 1) {
 			out.println(indent + "  ======================= Sub-table =======================");
 			subTable.printTable(out, indent + "  ", true);
 			out.println(indent + "  =========================================================\n");
