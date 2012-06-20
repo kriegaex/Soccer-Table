@@ -31,7 +31,7 @@ public class Group implements Comparable<Group>
 			table.rows.add(new TableRow(team, matches));
 	}
 
-	public void printTable()
+	public void printTable(String indent)
 	{
 		refreshTable();
 		Table rankedTable = new Table();
@@ -39,7 +39,7 @@ public class Group implements Comparable<Group>
 		int currentPoints = -1;
 		int currentRank = 1;
 		for (TableRow row : table.rows) {
-			System.out.println("### " + row);
+			//System.err.println("### " + row);
 			if (row.getPoints() == currentPoints) {
 				subTable.rows.add(new TableRow(row.team, row.matches));
 				continue;
@@ -50,17 +50,26 @@ public class Group implements Comparable<Group>
 		}
 		currentRank = integrateSubTable(rankedTable, subTable, currentRank);
 		table = rankedTable;
-		System.out.println();
+		//System.err.println();
+		System.out.println(indent + "Pos  Team          Pld    W    D    L   GF   GA   GD  Pts");
+		System.out.println(indent + "---  ------------  ---  ---  ---  ---  ---  ---  ---  ---");
 		for (TableRow row : table.rows) {
-			System.out.println(row);
+			//System.err.println(row);
+			System.out.println(indent + String.format(
+				"%3d  %-12s  %3d  %3d  %3d  %3d  %3d  %3d  %3d  %3d",
+				row.rank, row.team.name,
+				row.matchesPlayed, row.matchesWon, row.matchesDrawn, row.matchesLost,
+				row.goalsFor, row.goalsAgainst, row.goalsDifference,
+				row.points
+			));
 		}
 	}
 
 	private int integrateSubTable(Table rankedTable, Table subTable,
 		int currentRank)
 	{
-		if (subTable.rows.size() > 1)
-			System.out.println("  Subtable:");
+		//if (subTable.rows.size() > 1)
+		//	System.err.println("  Subtable:");
 		SortedSet<Team> subTableTeams = new TreeSet<Team>();
 		SortedSet<Match> subTableMatches = new TreeSet<Match>();
 
@@ -80,8 +89,8 @@ public class Group implements Comparable<Group>
 		for (TableRow subRow : subTableCopy) {
 			subRow.matches = subTableMatches;
 			subRow.updateMatchStatistics();
-			if (subTable.rows.size() > 1)
-				System.out.println("  " + subRow);
+			//if (subTable.rows.size() > 1)
+			//	System.err.println("  " + subRow);
 		}
 		subTable.rows.clear();
 		for (TableRow subRow : subTableCopy) {

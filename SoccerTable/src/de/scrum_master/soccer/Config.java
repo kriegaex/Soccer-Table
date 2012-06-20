@@ -42,7 +42,7 @@ public class Config
 				), 1);
 			}
 			print("");
-			group.printTable();
+			group.printTable("  ");
 			print("");
 		}
 	}

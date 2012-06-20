@@ -8,15 +8,15 @@ public class TableRow implements Comparable<TableRow>
 	public Team team;
 	public SortedSet<Match> matches = new TreeSet<Match>();
 
-	private int rank            = 0;  // set by Group while sorting ###
-	private int points          = 0;  // redundant
-	private int matchesPlayed   = 0;
-	private int matchesWon      = 0;
-	private int matchesDrawn    = 0;
-	private int matchesLost     = 0;  // redundant
-	private int goalsFor        = 0;
-	private int goalsAgainst    = 0;
-	private int goalsDifference = 0;  // redundant
+	public int rank            = 0;  // set by Group while sorting ###
+	public int points          = 0;  // redundant
+	public int matchesPlayed   = 0;
+	public int matchesWon      = 0;
+	public int matchesDrawn    = 0;
+	public int matchesLost     = 0;  // redundant
+	public int goalsFor        = 0;
+	public int goalsAgainst    = 0;
+	public int goalsDifference = 0;  // redundant
 	
 	public TableRow(Team team, SortedSet<Match> matches)
 	{
