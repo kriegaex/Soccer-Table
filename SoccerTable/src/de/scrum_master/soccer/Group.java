@@ -1,15 +1,16 @@
 package de.scrum_master.soccer;
 
+import java.io.PrintStream;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class Group implements Comparable<Group>
 {
-	public String id;
-	public String name;
-	public SortedSet<Team> teams = new TreeSet<Team>();
-	public SortedSet<Match> matches = new TreeSet<Match>();
-	public Table table;
+	private String id;
+	private String name;
+	private SortedSet<Team> teams = new TreeSet<Team>();
+	private SortedSet<Match> matches = new TreeSet<Match>();
+	private Table table;
 
 	@Override
 	public String toString()
@@ -21,90 +22,7 @@ public class Group implements Comparable<Group>
 	{
 		this.id = id;
 		this.name = name;
-	}
-
-	public void refreshTable()
-	{
-		// Create new Table without subtable ranking, general points/goals only
 		table = new Table();
-		for (Team team: teams)
-			table.rows.add(new TableRow(team, matches));
-	}
-
-	public void printTable(String indent)
-	{
-		refreshTable();
-		Table rankedTable = new Table();
-		Table subTable = new Table();
-		int currentPoints = -1;
-		int currentRank = 1;
-		for (TableRow row : table.rows) {
-			//System.err.println("### " + row);
-			if (row.getPoints() == currentPoints) {
-				subTable.rows.add(new TableRow(row.team, row.matches));
-				continue;
-			}
-			currentRank = integrateSubTable(rankedTable, subTable, currentRank);
-			subTable.rows.add(row);
-			currentPoints = row.getPoints(); 
-		}
-		currentRank = integrateSubTable(rankedTable, subTable, currentRank);
-		table = rankedTable;
-		//System.err.println();
-		System.out.println(indent + "Pos  Team          Pld    W    D    L   GF   GA   GD  Pts");
-		System.out.println(indent + "---  ------------  ---  ---  ---  ---  ---  ---  ---  ---");
-		for (TableRow row : table.rows) {
-			//System.err.println(row);
-			System.out.println(indent + String.format(
-				"%3d  %-12s  %3d  %3d  %3d  %3d  %3d  %3d  %3d  %3d",
-				row.rank, row.team.name,
-				row.matchesPlayed, row.matchesWon, row.matchesDrawn, row.matchesLost,
-				row.goalsFor, row.goalsAgainst, row.goalsDifference,
-				row.points
-			));
-		}
-	}
-
-	private int integrateSubTable(Table rankedTable, Table subTable,
-		int currentRank)
-	{
-		//if (subTable.rows.size() > 1)
-		//	System.err.println("  Subtable:");
-		SortedSet<Team> subTableTeams = new TreeSet<Team>();
-		SortedSet<Match> subTableMatches = new TreeSet<Match>();
-
-		// Gather sub-table teams
-		for (TableRow subRow : subTable.rows)
-			subTableTeams.add(subRow.team);
-
-		// Gather sub-table matches
-		for (Match subMatch : matches) {
-			if (subTableTeams.contains(subMatch.homeTeam) && subTableTeams.contains(subMatch.guestTeam))
-				subTableMatches.add(subMatch);
-		}
-
-		// Update match list for all sub-table rows
-		TableRow[] subTableCopy = new TableRow[subTable.rows.size()];
-		subTable.rows.toArray(subTableCopy); 
-		for (TableRow subRow : subTableCopy) {
-			subRow.matches = subTableMatches;
-			subRow.updateMatchStatistics();
-			//if (subTable.rows.size() > 1)
-			//	System.err.println("  " + subRow);
-		}
-		subTable.rows.clear();
-		for (TableRow subRow : subTableCopy) {
-			subTable.rows.add(subRow);
-		}
-
-		for (TableRow subRow : subTable.rows) {
-			TableRow clonedRow = new TableRow(subRow.team, matches);
-			clonedRow.setRank(currentRank++);
-			// TODO: take care of identical ranks
-			rankedTable.rows.add(clonedRow);
-		}
-		subTable.rows.clear();
-		return currentRank;
 	}
 
 	public int compareTo(Group group)
@@ -150,5 +68,37 @@ public class Group implements Comparable<Group>
 			i++;
 		}
 		return null;
+	}
+
+	public void addTeam(Team team)
+	{
+		teams.add(team);
+		table.addTeam(team);
+	}
+
+	public void addMatch(Match match)
+	{
+		matches.add(match);
+		table.addMatch(match);
+	}
+
+	public void print(PrintStream out)
+	{
+		out.println(name);
+		out.println();
+		for (Team team : teams)
+			out.println("  " + team + " (" + team.id + ")");
+		out.println();
+		for (Match match : matches) {
+			out.println(String.format(
+				"  %tF %tR    %-12s  -  %-12s    %2d : %2d",
+				match.date, match.date,
+				match.homeTeam, match.guestTeam,
+				match.homeScore, match.guestScore
+			));
+		}
+		out.println();
+		table.printTable(out, "  ");
+		out.println();		
 	}
 }
