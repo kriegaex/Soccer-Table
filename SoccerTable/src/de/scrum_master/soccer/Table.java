@@ -31,7 +31,8 @@ public class Table
 			Table subTable = new Table();
 			int currentPoints = rows.first().getPoints();
 			int currentRank = 1;
-			for (Row row : rowsToSortedArray()) {
+			for (Object obj : rows.toArray()) {
+				Row row = (Row) obj;
 				if (row.getPoints() == currentPoints) {
 					subTable.addTeam(row.team);
 					continue;
@@ -82,15 +83,6 @@ public class Table
 			refreshRow(row);
 		}
 		return currentRank + skipRank;
-	}
-
-	private Row[] rowsToSortedArray()
-	{
-		Row[] rowArray = new Row[rows.size()];
-		int i = 0;
-		for (Row row : rows)
-			rowArray[i++] = row;
-		return rowArray;
 	}
 
 	@Override
