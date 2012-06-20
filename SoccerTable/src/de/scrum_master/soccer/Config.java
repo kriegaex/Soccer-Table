@@ -32,6 +32,7 @@ public class Config
 			initialiseGroup_Dummy1();
 			initialiseGroup_Dummy2();
 			initialiseGroup_Dummy3();
+			initialiseGroup_Dummy4();
 		}
 	}
 
@@ -317,6 +318,48 @@ public class Config
 			new GregorianCalendar(2012, 6, 15, 18, 0),
 			group.getTeam("UKR"), group.getTeam("FRA"),
 			1, 1
+		));
+		group.addMatch(new Match(
+			new GregorianCalendar(2012, 6, 15, 20, 45),
+			group.getTeam("SWE"), group.getTeam("ENG"),
+			1, 0
+		));
+		group.addMatch(new Match(
+			new GregorianCalendar(2012, 6, 19, 20, 45),
+			group.getTeam("SWE"), group.getTeam("FRA"),
+			0, 1
+		));
+		group.addMatch(new Match(
+			new GregorianCalendar(2012, 6, 19, 20, 45),
+			group.getTeam("ENG"), group.getTeam("UKR"),
+			1, 1
+		));
+	}
+
+	private void initialiseGroup_Dummy4()
+	{
+		Group group = new Group("X4", "Gruppe Dummy4");
+		groups.add(group);
+
+		group.addTeam(new Team("ENG", "England"));       // #2
+		group.addTeam(new Team("FRA", "Frankreich"));    // #1 (goals scored overall)
+		group.addTeam(new Team("SWE", "Schweden"));      // #2
+		group.addTeam(new Team("UKR", "Ukraine"));       // #4
+
+		group.addMatch(new Match(
+			new GregorianCalendar(2012, 6, 11, 18, 0),
+			group.getTeam("FRA"), group.getTeam("ENG"),
+			0, 1
+		));
+		group.addMatch(new Match(
+			new GregorianCalendar(2012, 6, 11, 20, 45),
+			group.getTeam("UKR"), group.getTeam("SWE"),
+			1, 1
+		));
+		group.addMatch(new Match(
+			new GregorianCalendar(2012, 6, 15, 18, 0),
+			group.getTeam("UKR"), group.getTeam("FRA"),
+			2, 2
 		));
 		group.addMatch(new Match(
 			new GregorianCalendar(2012, 6, 15, 20, 45),
