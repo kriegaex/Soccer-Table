@@ -2,41 +2,101 @@ package de.scrum_master.soccer;
 
 import java.util.GregorianCalendar;
 
-public class Match implements Comparable<Match>
+class Match implements Comparable<Match>
 {
-	public String id;
-	public GregorianCalendar date;
-	public Team homeTeam;
-	public Team guestTeam;
-	public int homeScore = -1;
-	public int guestScore = -1;
+	private String id;
+	private GregorianCalendar date;
+	private Team homeTeam;
+	private Team guestTeam;
+	private int homeScore = -1;
+	private int guestScore = -1;
 
-	public Match(GregorianCalendar date, Team homeTeam, Team guestTeam, int homeScore, int guestScore)
+	Match(GregorianCalendar date, Team homeTeam, Team guestTeam, int homeScore, int guestScore)
 	{
-		this.date = date;
-		this.homeTeam = homeTeam;
-		this.guestTeam = guestTeam;
-		this.homeScore = homeScore;
-		this.guestScore = guestScore;
-		id = homeTeam.id + "-" + guestTeam.id;
+		this.setDate(date);
+		this.setHomeTeam(homeTeam);
+		this.setGuestTeam(guestTeam);
+		this.setHomeScore(homeScore);
+		this.setGuestScore(guestScore);
+		setId(homeTeam.getId() + "-" + guestTeam.getId());
 	}
 
-	public Match(GregorianCalendar date, Team homeTeam, Team guestTeam)
+	Match(GregorianCalendar date, Team homeTeam, Team guestTeam)
 	{
 		this(date, homeTeam, guestTeam, -1, -1);
+	}
+
+	public int compareTo(Match match)
+	{
+		int result = getDate().compareTo(match.getDate());
+		if (result != 0)
+			return result;
+		return getId().compareTo(match.getId());
 	}
 
 	@Override
 	public String toString()
 	{
+		return getId();
+	}
+
+	String getId()
+	{
 		return id;
 	}
 
-	public int compareTo(Match match)
+	void setId(String id)
 	{
-		int result = date.compareTo(match.date);
-		if (result != 0)
-			return result;
-		return id.compareTo(match.id);
+		this.id = id;
+	}
+
+	GregorianCalendar getDate()
+	{
+		return date;
+	}
+
+	void setDate(GregorianCalendar date)
+	{
+		this.date = date;
+	}
+
+	Team getHomeTeam()
+	{
+		return homeTeam;
+	}
+
+	void setHomeTeam(Team homeTeam)
+	{
+		this.homeTeam = homeTeam;
+	}
+
+	Team getGuestTeam()
+	{
+		return guestTeam;
+	}
+
+	void setGuestTeam(Team guestTeam)
+	{
+		this.guestTeam = guestTeam;
+	}
+
+	int getHomeScore()
+	{
+		return homeScore;
+	}
+
+	void setHomeScore(int homeScore)
+	{
+		this.homeScore = homeScore;
+	}
+
+	int getGuestScore()
+	{
+		return guestScore;
+	}
+
+	void setGuestScore(int guestScore)
+	{
+		this.guestScore = guestScore;
 	}
 }

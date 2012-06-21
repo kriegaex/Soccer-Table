@@ -1,16 +1,21 @@
 package de.scrum_master.soccer;
 
+import java.io.PrintStream;
 import java.util.GregorianCalendar;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class Config
+class Config
 {
-	public SortedSet<Group> groups = new TreeSet<Group>();
+	private SortedSet<Group> groups = new TreeSet<Group>();
 
-	static final boolean REAL_GROUPS  = false;  
-	static final boolean DUMMY_GROUPS = true;  
-	static final boolean DEBUG        = true;  
+	// Real groups from Euro 2012
+	private static final boolean REAL_GROUPS = false;  
+	// Dummy groups for special ranking situations
+	private static final boolean DUMMY_GROUPS = true;  
+
+	// Set to null if no sub-table printing is required
+	static final PrintStream DEBUG_STREAM = System.out;  
 
 	public static void main(String[] args)
 	{

@@ -6,51 +6,85 @@ import java.util.TreeSet;
 
 public class Table
 {
-	public SortedSet<Row> rows = new TreeSet<Row>();
+	private SortedSet<Row> rows = new TreeSet<Row>();
 	private SortedSet<Team> teams = new TreeSet<Team>();
 	private SortedSet<Match> matches = new TreeSet<Match>();
 
-	public void removeRanks()
+	public Table() { }
+
+	public Table(Iterable<Team> teams, Iterable<Match> matches)
+	{
+		for (Team team : teams)
+			addTeam(team);
+		for (Match match : matches)
+			addMatch(match);
+	}
+
+	public void calculate()
+	{
+		// Reset explicit ranking to enable automatic ranking
+		clearRanks();
+	
+		// Main ranking + sub-tables
+		Table subTable = new Table();
+		int currentPoints = rows.first().points;
+		int currentRank = 1;
+		int originalOrder = 0;
+		for (Object obj : rows.toArray()) {
+			Row row = (Row) obj;
+			if (row.points == currentPoints) {
+				subTable.addTeam(row.team);
+				row.mainTableOrder = originalOrder++;
+				// refreshRow here is optional because the row was added to the sub-table
+				// and will be updated after having been ranked anyway
+				//refreshRow(row);
+				continue;
+			}
+			// Sub-row ranking (direct comparison)
+			currentRank = calculateSubTable(subTable, currentRank);
+			currentPoints = row.points;
+			subTable = new Table();
+			subTable.addTeam(row.team);
+		}
+		// Sub-row ranking (direct comparison), continued
+		calculateSubTable(subTable, currentRank);
+	
+		// Fine ranking for identical sub-table ranks: goal difference and goals scored *overall* 
+		Row previousRow;
+		Row row = null;
+		for (Object obj : rows.toArray()) {
+			previousRow = row;
+			row = (Row) obj;
+			if (previousRow != null) {
+				if (row.rank < previousRow.rank)
+					row.rank = previousRow.rank;
+				if (row.rank == previousRow.rank && ! row.matchDataEquals(previousRow)) {
+					row.rank = row.rank + 1;
+					refreshRow(row);
+				}
+			}
+		}
+	}
+
+	public void clearRanks()
 	{
 		for (Object obj : rows.toArray()) {
 			Row row = (Row) obj;
-			row.setRank(0);
+			row.rank = 0;
+			// Clearing the "main table order" helper field is optional, but it might be safer to do it anyway. 
+			row.mainTableOrder = 0;
 			refreshRow(row);
 		}
 	}
 
-	public void printTable(PrintStream out, String indent)
+	private void refreshRow(Row row)
 	{
-		printTable(out, indent, false);
+		rows.remove(row);
+		row.updateMatchStatistics();
+		rows.add(row);
 	}
 
-	public void printTable(PrintStream out, String indent, boolean isSubTable)
-	{
-		if (! isSubTable) {
-			removeRanks();
-			Table subTable = new Table();
-			int currentPoints = rows.first().getPoints();
-			int currentRank = 1;
-			for (Object obj : rows.toArray()) {
-				Row row = (Row) obj;
-				if (row.getPoints() == currentPoints) {
-					subTable.addTeam(row.team);
-					continue;
-				}
-				currentRank = calculateSubTable(out, indent, subTable, currentRank);
-				currentPoints = row.getPoints();
-				subTable = new Table();
-				subTable.addTeam(row.team);
-			}
-			calculateSubTable(out, indent, subTable, currentRank);
-		}
-		out.println(indent + "Pos  Team          Pld    W    D    L   GF   GA   GD  Pts");
-		out.println(indent + "---  ------------  ---  ---  ---  ---  ---  ---  ---  ---");
-		for (Row row : rows)
-			row.print(out, indent);
-	}
-
-	private int calculateSubTable(PrintStream out, String indent, Table subTable, int currentRank)
+	private int calculateSubTable(Table subTable, int currentRank)
 	{
 		for (Match match : matches) {
 			try {
@@ -60,13 +94,14 @@ public class Table
 				// Only add matches between sub-table teams, ignore others
 			}
 		}
-
-		if (Config.DEBUG && subTable.rows.size() > 1) {
-			out.println(indent + "  ======================= Sub-table =======================");
-			subTable.printTable(out, indent + "  ", true);
-			out.println(indent + "  =========================================================\n");
+	
+		PrintStream out = Config.DEBUG_STREAM;
+		if (out != null && subTable.rows.size() > 1) {
+			out.println("    ======================= Sub-table =======================");
+			subTable.print(out, "    ");
+			out.println("    =========================================================\n");
 		}
-
+	
 		Row previousSubRow;
 		Row subRow = null;
 		int skipRank = 0;
@@ -79,10 +114,18 @@ public class Table
 				skipRank++;
 			}
 			Row row = getRow(subRow.team);
-			row.setRank(currentRank++);
+			row.rank = currentRank++;
 			refreshRow(row);
 		}
 		return currentRank + skipRank;
+	}
+
+	public void print(PrintStream out, String indent)
+	{
+		out.println(indent + "Pos  Team          Pld    W    D    L   GF   GA   GD  Pts");
+		out.println(indent + "---  ------------  ---  ---  ---  ---  ---  ---  ---  ---");
+		for (Row row : rows)
+			row.print(out, indent);
 	}
 
 	@Override
@@ -95,21 +138,23 @@ public class Table
 		return builder.toString();
 	}
 
-	public Table(Iterable<Team> teams, Iterable<Match> matches)
-	{
-		for (Team team : teams)
-			addTeam(team);
-		for (Match match : matches)
-			addMatch(match);
-	}
-
-	public Table() { }
-
 	public void addTeam(Team team)
 	{
 		teams.add(team);
 		if (getRow(team) == null)
 			rows.add(new Row(team));
+	}
+
+	public void addMatch(Match match)
+	{
+		if (! teams.contains(match.getHomeTeam()))
+			throw new IllegalArgumentException("Home team \"" + match.getHomeTeam() + "\" not found in team list");
+		if (! teams.contains(match.getGuestTeam()))
+			throw new IllegalArgumentException("Guest  team \"" + match.getGuestTeam() + "\" not found in team list");
+		if (matches.add(match)) {
+			refreshRow(getRow(match.getHomeTeam()));
+			refreshRow(getRow(match.getGuestTeam()));
+		}
 	}
 
 	private Row getRow(Team team)
@@ -121,48 +166,35 @@ public class Table
 		return null;
 	}
 
-	public void addMatch(Match match)
+	class Row implements Comparable<Row>
 	{
-		if (! teams.contains(match.homeTeam))
-			throw new IllegalArgumentException("Home team \"" + match.homeTeam + "\" not found in team list");
-		if (! teams.contains(match.guestTeam))
-			throw new IllegalArgumentException("Guest  team \"" + match.guestTeam + "\" not found in team list");
-		if (matches.add(match)) {
-			refreshRow(getRow(match.homeTeam));
-			refreshRow(getRow(match.guestTeam));
-		}
-	}
+		private Team team;
 
-	private void refreshRow(Row row)
-	{
-		rows.remove(row);
-		row.updateMatchStatistics();
-		rows.add(row);
-	}
+		// Rank calculated from match statistics in main & sub-tables
+		private int rank            = 0;
 
-	public class Row implements Comparable<Row>
-	{
-		public Team team;
+		// Match statistics
+		private int points          = 0;  // redundant
+		private int matchesPlayed   = 0;
+		private int matchesWon      = 0;
+		private int matchesDrawn    = 0;
+		private int matchesLost     = 0;  // redundant
+		private int goalsFor        = 0;
+		private int goalsAgainst    = 0;
+		private int goalsDifference = 0;  // redundant
 
-		public int rank            = 0;  // set by Group while sorting ###
-		public int points          = 0;  // redundant
-		public int matchesPlayed   = 0;
-		public int matchesWon      = 0;
-		public int matchesDrawn    = 0;
-		public int matchesLost     = 0;  // redundant
-		public int goalsFor        = 0;
-		public int goalsAgainst    = 0;
-		public int goalsDifference = 0;  // redundant
+		// Helper field for remembering original order in main table if sub-table ranking
+		// results in multiple identical ranks and we have to consider overall goals.
+		private int mainTableOrder   = 0;
 		
-		public Row(Team team)
+		private Row(Team team)
 		{
 			this.team = team;
 			updateMatchStatistics();
 		}
 
-		public void updateMatchStatistics()
+		private void updateMatchStatistics()
 		{
-			//### rank            = 0;
 			points          = 0;
 			matchesPlayed   = 0;
 			matchesWon      = 0;
@@ -174,20 +206,20 @@ public class Table
 
 			for (Match match : Table.this.matches) {
 				if (
-					match.homeScore < 0 || match.guestScore < 0 ||
-					(! team.equals(match.homeTeam) && ! team.equals(match.guestTeam))
+					match.getHomeScore() < 0 || match.getGuestScore() < 0 ||
+					(! team.equals(match.getHomeTeam()) && ! team.equals(match.getGuestTeam()))
 				)
 					continue;
 
 				matchesPlayed++;
-				if (team.equals(match.homeTeam)) {
-					goalsFor = goalsFor + match.homeScore; 
-					goalsAgainst = goalsAgainst + match.guestScore;
-					if (match.homeScore > match.guestScore) {
+				if (team.equals(match.getHomeTeam())) {
+					goalsFor = goalsFor + match.getHomeScore(); 
+					goalsAgainst = goalsAgainst + match.getGuestScore();
+					if (match.getHomeScore() > match.getGuestScore()) {
 						matchesWon++;
 						points = points + 3;
 					}
-					else if (match.homeScore == match.guestScore) {
+					else if (match.getHomeScore() == match.getGuestScore()) {
 						matchesDrawn++;
 						points++;
 					}
@@ -196,13 +228,13 @@ public class Table
 					}
 				}
 				else {
-					goalsFor = goalsFor + match.guestScore; 
-					goalsAgainst = goalsAgainst + match.homeScore;
-					if (match.homeScore < match.guestScore) {
+					goalsFor = goalsFor + match.getGuestScore(); 
+					goalsAgainst = goalsAgainst + match.getHomeScore();
+					if (match.getHomeScore() < match.getGuestScore()) {
 						matchesWon++;
 						points = points + 3;
 					}
-					else if (match.homeScore == match.guestScore) {
+					else if (match.getHomeScore() == match.getGuestScore()) {
 						matchesDrawn++;
 						points++;
 					}
@@ -246,13 +278,18 @@ public class Table
 				// TODO: UEFA coefficient, fair-play score
 			}
 
+			// In sub-tables we want to keep up the main table's original sort order
+			// if everything else is identical.
+			if (mainTableOrder < other.mainTableOrder)
+				return -1;
+
 			// If TableRows are part of a [Sorted]Set, their team IDs differentiate them
 			// even if the scores are identical. Otherwise it would be impossible to have
 			// two teams with identical scores in one Set.
-			return team.id.compareTo(other.team.id);
+			return team.getId().compareTo(other.team.getId());
 		}
 
-		public boolean matchDataEquals(Row other)
+		private boolean matchDataEquals(Row other)
 		{
 			if (this == other)
 				return true;
@@ -271,26 +308,11 @@ public class Table
 			return true;
 		}
 
-		public int getRank()
-		{
-			return rank;
-		}
-
-		public void setRank(int rank)
-		{
-			this.rank = rank;
-		}
-
-		public int getPoints()
-		{
-			return points;
-		}
-
-		public void print(PrintStream out, String indent)
+		private void print(PrintStream out, String indent)
 		{
 			out.println(String.format(
 				indent + "%3d  %-12s  %3d  %3d  %3d  %3d  %3d  %3d  %3d  %3d",
-				rank, team.name,
+				rank, team.getName(),
 				matchesPlayed, matchesWon, matchesDrawn, matchesLost,
 				goalsFor, goalsAgainst, goalsDifference,
 				points
@@ -300,11 +322,19 @@ public class Table
 		@Override
 		public String toString()
 		{
-			return "Table.Row [team=" + team + ", rank=" + rank + ", points=" +
-				points + ", matchesPlayed=" + matchesPlayed + ", matchesWon=" +
-				matchesWon + ", matchesDrawn=" + matchesDrawn + ", matchesLost=" +
-				matchesLost + ", goalsFor=" + goalsFor + ", goalsAgainst=" +
-				goalsAgainst + ", goalsDifference=" + goalsDifference + "]";
+			StringBuilder builder = new StringBuilder();
+			builder
+				.append("Row [team=").append(team).append(", rank=")
+				.append(rank).append(", points=").append(points)
+				.append(", matchesPlayed=").append(matchesPlayed)
+				.append(", matchesWon=").append(matchesWon)
+				.append(", matchesDrawn=").append(matchesDrawn)
+				.append(", matchesLost=").append(matchesLost)
+				.append(", goalsFor=").append(goalsFor)
+				.append(", goalsAgainst=").append(goalsAgainst)
+				.append(", goalsDifference=").append(goalsDifference)
+				.append(", mainTableOrder=").append(mainTableOrder).append("]");
+			return builder.toString();
 		}
 	}
 }
