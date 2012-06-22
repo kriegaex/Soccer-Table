@@ -6,9 +6,9 @@ import java.util.TreeSet;
 
 public class Table
 {
-	private SortedSet<Row> rows = new TreeSet<Row>();
-	private SortedSet<Team> teams = new TreeSet<Team>();
-	private SortedSet<Match> matches = new TreeSet<Match>();
+	private SortedSet<Row>           rows    = new TreeSet<Row>();
+	private SortedSet<Team>          teams   = new TreeSet<Team>();
+	private SortedSet<Match>         matches = new TreeSet<Match>();
 
 	public Table() { }
 
@@ -22,7 +22,7 @@ public class Table
 
 	public void calculate()
 	{
-		// Reset explicit ranking to enable automatic ranking
+		// Reset explicit ranking to enable automatic ranking via compareTo
 		clearRanks();
 	
 		// Main ranking + sub-tables
@@ -34,10 +34,8 @@ public class Table
 			Row row = (Row) obj;
 			if (row.points == currentPoints) {
 				subTable.addTeam(row.team);
+				// Only needed for subTable -> no need to markForUpdate here
 				row.mainTableOrder = originalOrder++;
-				// refreshRow here is optional because the row was added to the sub-table
-				// and will be updated after having been ranked anyway
-				//refreshRow(row);
 				continue;
 			}
 			// Sub-row ranking (direct comparison)
@@ -185,7 +183,7 @@ public class Table
 
 		// Helper field for remembering original order in main table if sub-table ranking
 		// results in multiple identical ranks and we have to consider overall goals.
-		private int mainTableOrder   = 0;
+		private int mainTableOrder  = 0;
 		
 		private Row(Team team)
 		{

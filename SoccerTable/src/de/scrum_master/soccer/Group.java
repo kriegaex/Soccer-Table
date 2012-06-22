@@ -8,7 +8,7 @@ class Group implements Comparable<Group>
 {
 	private String id;
 	private String name;
-	private SortedSet<Team> teams = new TreeSet<Team>();
+	private SortedSet<Team>  teams   = new TreeSet<Team>();
 	private SortedSet<Match> matches = new TreeSet<Match>();
 	private Table table;
 
