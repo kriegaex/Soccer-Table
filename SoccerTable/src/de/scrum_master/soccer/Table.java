@@ -280,6 +280,8 @@ public class Table
 			// if everything else is identical.
 			if (mainTableOrder < other.mainTableOrder)
 				return -1;
+			if (mainTableOrder > other.mainTableOrder)
+				return 1;
 
 			// If TableRows are part of a [Sorted]Set, their team IDs differentiate them
 			// even if the scores are identical. Otherwise it would be impossible to have
