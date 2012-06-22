@@ -246,6 +246,9 @@ public class Table
 
 		public int compareTo(Row other)
 		{
+			if (this.equals(other))
+				return 0;
+
 			// Sort order: ascending by rank (if != 0), then descending by points/goals
 
 			// Rank (if calculated already)
