@@ -4,9 +4,12 @@ import java.io.PrintStream;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import de.scrum_master.util.UpdateableTreeSet;
+import de.scrum_master.util.UpdateableTreeSet.Updateable;
+
 public class Table
 {
-	private SortedSet<Row>           rows    = new TreeSet<Row>();
+	private UpdateableTreeSet<Row>   rows    = new UpdateableTreeSet<Row>();
 	private SortedSet<Team>          teams   = new TreeSet<Team>();
 	private SortedSet<Match>         matches = new TreeSet<Match>();
 
@@ -30,12 +33,11 @@ public class Table
 		int currentPoints = rows.first().points;
 		int currentRank = 1;
 		int originalOrder = 0;
-		for (Object obj : rows.toArray()) {
-			Row row = (Row) obj;
+		for (Row row : rows) {
+			// Only needed for subTable -> no need to markForUpdate here
+			row.mainTableOrder = originalOrder++;
 			if (row.points == currentPoints) {
 				subTable.addTeam(row.team);
-				// Only needed for subTable -> no need to markForUpdate here
-				row.mainTableOrder = originalOrder++;
 				continue;
 			}
 			// Sub-row ranking (direct comparison)
@@ -46,40 +48,35 @@ public class Table
 		}
 		// Sub-row ranking (direct comparison), continued
 		calculateSubTable(subTable, currentRank);
+		rows.updateAllMarked();
 	
 		// Fine ranking for identical sub-table ranks: goal difference and goals scored *overall* 
-		Row previousRow;
-		Row row = null;
-		for (Object obj : rows.toArray()) {
-			previousRow = row;
-			row = (Row) obj;
+		Row previousRow = null;
+		for (Row row : rows) {
 			if (previousRow != null) {
-				if (row.rank < previousRow.rank)
+				if (row.rank < previousRow.rank) {
 					row.rank = previousRow.rank;
+					rows.markForUpdate(row);
+				}
 				if (row.rank == previousRow.rank && ! row.matchDataEquals(previousRow)) {
-					row.rank = row.rank + 1;
-					refreshRow(row);
+					row.rank++;
+					rows.markForUpdate(row);
 				}
 			}
+			previousRow = row;
 		}
+		rows.updateAllMarked();
 	}
 
 	public void clearRanks()
 	{
-		for (Object obj : rows.toArray()) {
-			Row row = (Row) obj;
+		for (Row row : rows) {
 			row.rank = 0;
 			// Clearing the "main table order" helper field is optional, but it might be safer to do it anyway. 
 			row.mainTableOrder = 0;
-			refreshRow(row);
+			rows.markForUpdate(row);
 		}
-	}
-
-	private void refreshRow(Row row)
-	{
-		rows.remove(row);
-		row.updateMatchStatistics();
-		rows.add(row);
+		rows.updateAllMarked();
 	}
 
 	private int calculateSubTable(Table subTable, int currentRank)
@@ -100,12 +97,9 @@ public class Table
 			out.println("    =========================================================\n");
 		}
 	
-		Row previousSubRow;
-		Row subRow = null;
+		Row previousSubRow = null;
 		int skipRank = 0;
-		for (Object obj : subTable.rows.toArray()) {
-			previousSubRow = subRow;
-			subRow = (Row) obj;
+		for (Row subRow : subTable.rows) {
 			// Take care of identical ranks
 			if (previousSubRow != null && subRow.matchDataEquals(previousSubRow)) {
 				currentRank--;
@@ -113,7 +107,8 @@ public class Table
 			}
 			Row row = getRow(subRow.team);
 			row.rank = currentRank++;
-			refreshRow(row);
+			rows.markForUpdate(row);
+			previousSubRow = subRow;
 		}
 		return currentRank + skipRank;
 	}
@@ -150,8 +145,8 @@ public class Table
 		if (! teams.contains(match.getGuestTeam()))
 			throw new IllegalArgumentException("Guest  team \"" + match.getGuestTeam() + "\" not found in team list");
 		if (matches.add(match)) {
-			refreshRow(getRow(match.getHomeTeam()));
-			refreshRow(getRow(match.getGuestTeam()));
+			rows.update(getRow(match.getHomeTeam()));
+			rows.update(getRow(match.getGuestTeam()));
 		}
 	}
 
@@ -164,7 +159,7 @@ public class Table
 		return null;
 	}
 
-	class Row implements Comparable<Row>
+	class Row implements Comparable<Row>, Updateable
 	{
 		private Team team;
 
@@ -188,10 +183,19 @@ public class Table
 		private Row(Team team)
 		{
 			this.team = team;
-			updateMatchStatistics();
+			update();
 		}
 
-		private void updateMatchStatistics()
+		/**
+		 * @param newValue is currently ignored and only needed to fulfil the
+		 * {@link de.scrum_master.util.UpdateableTreeSet.Updateable Updateable} contract
+		 */
+		public void update(Object newValue)
+		{
+			update();
+		}
+
+		public void update()
 		{
 			points          = 0;
 			matchesPlayed   = 0;
