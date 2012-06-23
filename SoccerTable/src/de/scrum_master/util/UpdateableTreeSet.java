@@ -8,8 +8,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * @author Alexander Kriegisch, <a href="http://scrum-master.de">Scrum-Master.de</a>
- *
  * This class is just a thin layer around its parent class, adding an element updating and re-sorting
  * feature which works as follows:
  * <p>
@@ -17,7 +15,7 @@ import java.util.TreeSet;
  * iterating over them in a loop. There is one exception: If you use an {@link java.util.Iterator Iterator}
  * you may safely use its {@link java.util.Iterator#remove() remove} method. Many people
  * do not know that or are even unaware of that method's existence because they iterate
- * using <i>for</i> loops.
+ * using {@code for} loops.
  * <p>
  * Another problem specifically with sorted collections is that even if they are
  * {@link java.lang.Comparable Comparable} or use an explicit {@link java.util.Comparator Comparator},
@@ -55,16 +53,21 @@ import java.util.TreeSet;
  * 
  * mySortedSet.updateAllMarked();
  * </pre>
+ * Special thanks go to user <a href="http://stackoverflow.com/users/15472/tucuxi">tucuxi at stackoverflow.com</a>
+ * because his <a href="http://stackoverflow.com/a/2581450/1082681">answer</a> in one of the discussion threads
+ * inspired me to implement this class based on his idea. My version is just a bit more sophisticated because
+ * it supports deferred updates and is thus useful within {@code for} loops.
+ * <p>
+ * @author Alexander Kriegisch, <a href="http://scrum-master.de">Scrum-Master.de</a>
  */
 public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends TreeSet<E>
 {
 	/**
-	 * @author Alexander Kriegisch, <a href="http://scrum-master.de">Scrum-Master.de</a>
-	 * 
 	 * UpdateableTreeSet elements must implement this interface in order to provide a structured way
 	 * of updating themselves at the right moment during an update operation, i.e. after temporary
 	 * removal from the collection and before being added back into the collection. 
 	 *
+	 * @author Alexander Kriegisch, <a href="http://scrum-master.de">Scrum-Master.de</a>
 	 */
 	public interface Updateable {
 		/**
@@ -76,7 +79,7 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 
 		/**
 		 * Update method for elements which need one or more new values. If more than one value is
-		 * necessary, <tt>newValue</tt> could e.g. be a Map or a List. If you do not need this method,
+		 * necessary, {@code newValue} could e.g. be a Map or a List. If you do not need this method,
 		 * just specify a version dropping the value and calling {@link #update()} instead.
 		 */
 		void update(Object newValue);
@@ -146,7 +149,7 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 	 * so you can start to mark other elements afterwards.
 	 * <p>
 	 * Please note that if any remove or update action fails, this will be silently ignored as long
-	 * as there are not exceptions. 
+	 * as there are no exceptions. 
 	 * <p> 
 	 * <b>Attention:</b> Do not call this method while looping over the collection and beware of
 	 * manually modifying any marked elements before their scheduled update/removal. They might
@@ -174,7 +177,7 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 	 * <b>Attention:</b> Do not call this method while looping over the collection.
 	 *
 	 * @param element the element to be updated
-	 * @param element's new value (if any) 
+	 * @param newValue element's new value (if any) 
 	 * 
 	 * @return true if element was found in collection and updated (i.e. removed and
 	 * added back) successfully 
