@@ -13,12 +13,12 @@ class Match implements Comparable<Match>
 
 	Match(GregorianCalendar date, Team homeTeam, Team guestTeam, int homeScore, int guestScore)
 	{
-		this.setDate(date);
-		this.setHomeTeam(homeTeam);
-		this.setGuestTeam(guestTeam);
-		this.setHomeScore(homeScore);
-		this.setGuestScore(guestScore);
-		setId(homeTeam.getId() + "-" + guestTeam.getId());
+		this.date = date;
+		this.homeTeam = homeTeam;
+		this.guestTeam = guestTeam;
+		this.homeScore = homeScore;
+		this.guestScore = guestScore;
+		this.id = homeTeam.getId() + "-" + guestTeam.getId();
 	}
 
 	Match(GregorianCalendar date, Team homeTeam, Team guestTeam)
@@ -45,19 +45,9 @@ class Match implements Comparable<Match>
 		return id;
 	}
 
-	void setId(String id)
-	{
-		this.id = id;
-	}
-
 	GregorianCalendar getDate()
 	{
 		return date;
-	}
-
-	void setDate(GregorianCalendar date)
-	{
-		this.date = date;
 	}
 
 	Team getHomeTeam()
@@ -65,19 +55,9 @@ class Match implements Comparable<Match>
 		return homeTeam;
 	}
 
-	void setHomeTeam(Team homeTeam)
-	{
-		this.homeTeam = homeTeam;
-	}
-
 	Team getGuestTeam()
 	{
 		return guestTeam;
-	}
-
-	void setGuestTeam(Team guestTeam)
-	{
-		this.guestTeam = guestTeam;
 	}
 
 	int getHomeScore()
@@ -85,18 +65,8 @@ class Match implements Comparable<Match>
 		return homeScore;
 	}
 
-	void setHomeScore(int homeScore)
-	{
-		this.homeScore = homeScore;
-	}
-
 	int getGuestScore()
 	{
 		return guestScore;
-	}
-
-	void setGuestScore(int guestScore)
-	{
-		this.guestScore = guestScore;
 	}
 }
