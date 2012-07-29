@@ -1,17 +1,17 @@
 package de.scrum_master.soccer;
 
-import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 class Match implements Comparable<Match>
 {
 	private String id;
-	private GregorianCalendar date;
+	private Calendar date;
 	private Team homeTeam;
 	private Team guestTeam;
 	private int homeScore = -1;
 	private int guestScore = -1;
 
-	Match(GregorianCalendar date, Team homeTeam, Team guestTeam, int homeScore, int guestScore)
+	Match(Calendar date, Team homeTeam, Team guestTeam, int homeScore, int guestScore)
 	{
 		this.date = date;
 		this.homeTeam = homeTeam;
@@ -21,7 +21,7 @@ class Match implements Comparable<Match>
 		this.id = homeTeam.getId() + "-" + guestTeam.getId();
 	}
 
-	Match(GregorianCalendar date, Team homeTeam, Team guestTeam)
+	Match(Calendar date, Team homeTeam, Team guestTeam)
 	{
 		this(date, homeTeam, guestTeam, -1, -1);
 	}
@@ -45,7 +45,7 @@ class Match implements Comparable<Match>
 		return id;
 	}
 
-	GregorianCalendar getDate()
+	Calendar getDate()
 	{
 		return date;
 	}
