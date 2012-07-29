@@ -1,30 +1,25 @@
 package de.scrum_master.soccer;
 
-class Team implements Comparable<Team>
-{
+class Team implements Comparable<Team> {
 	private String id;
 	private String name;
 
-	Team(String id, String name)
-	{
+	Team(String id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public int compareTo(Team other)
-	{
+	public int compareTo(Team other) {
 		return id.compareTo(other.id);
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		return id == null ? 0 : id.hashCode();
 	}
 
 	@Override
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -42,18 +37,15 @@ class Team implements Comparable<Team>
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return name;
 	}
 
-	String getId()
-	{
+	String getId() {
 		return id;
 	}
 
-	String getName()
-	{
+	String getName() {
 		return name;
 	}
 }

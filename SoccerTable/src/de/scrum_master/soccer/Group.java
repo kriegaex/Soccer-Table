@@ -8,16 +8,14 @@ import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-class Group implements Comparable<Group>
-{
+class Group implements Comparable<Group> {
 	private String id;
 	private String name;
 	private SortedSet<Team>  teams   = new TreeSet<Team>();
 	private SortedSet<Match> matches = new TreeSet<Match>();
 	private Table table;
 
-	Group(String id, String name)
-	{
+	Group(String id, String name) {
 		this.id = id;
 		this.name = name;
 		table = new Table();
@@ -44,8 +42,7 @@ class Group implements Comparable<Group>
 	 * so this method creates synthetic, identical ones without any real-world significance.
 	 * @return the Group generated from the cross-table
 	 */
-	static Group parseCrossTable(String id, String name, String rawData)
-	{
+	static Group parseCrossTable(String id, String name, String rawData) {
 		Group group = new Group(id, name);
 
 		// Determine teams
@@ -83,25 +80,21 @@ class Group implements Comparable<Group>
 		return group;
 	}
 
-	public int compareTo(Group group)
-	{
+	public int compareTo(Group group) {
 		return id.compareTo(group.id);
 	}
 
-	void addTeam(Team team)
-	{
+	void addTeam(Team team) {
 		teams.add(team);
 		table.addTeam(team);
 	}
 
-	void addMatch(Match match)
-	{
+	void addMatch(Match match) {
 		matches.add(match);
 		table.addMatch(match);
 	}
 
-	Team getTeam(String id)
-	{
+	Team getTeam(String id) {
 		for (Team team : teams) {
 			if (id.equals(team.getId()))
 				return team;
@@ -109,8 +102,7 @@ class Group implements Comparable<Group>
 		return null;
 	}
 
-	Match getMatch(String id)
-	{
+	Match getMatch(String id) {
 		for (Match match : matches) {
 			if (id.equals(match.getId()))
 				return match;
@@ -118,13 +110,11 @@ class Group implements Comparable<Group>
 		return null;
 	}
 
-	void print(PrintStream out)
-	{
+	void print(PrintStream out) {
 		print(out, true, true);
 	}
 
-	void print(PrintStream out, boolean showTeams, boolean showMatches)
-	{
+	void print(PrintStream out, boolean showTeams, boolean showMatches) {
 		out.println(name);
 		out.println();
 		if (showTeams) {
@@ -149,8 +139,7 @@ class Group implements Comparable<Group>
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return name;
 	}
 }

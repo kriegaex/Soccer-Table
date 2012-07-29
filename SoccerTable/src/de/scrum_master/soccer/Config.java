@@ -19,15 +19,13 @@ class Config
 	// Set to null if no sub-table printing is required
 	static final PrintStream DEBUG_STREAM = System.out;
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Config config = new Config();
 		config.initialiseGroups();
 		config.printGroups();
 	}
 
-	private void initialiseGroups()
-	{
+	private void initialiseGroups() {
 		groups.clear();
 		if (PRIMERA_DIVISION_GROUPS) {
 			initialiseGroup_PrimeraDivision_2007_08();
@@ -50,8 +48,7 @@ class Config
 		}
 	}
 
-	private void initialiseGroup_PrimeraDivision_2007_08()
-	{
+	private void initialiseGroup_PrimeraDivision_2007_08() {
 		String rawData =
 			"R. Madrid,?,3,2,4,1,2,1,3,1,3,1,4,3,3,1,3,1,2,3,3,0,2,1,2,0,0,1,7,0,2,0,2,0,2,0,1,0,5,2\n" +
 			"Villarreal,0,5,?,3,1,3,0,3,2,0,0,1,1,1,1,4,3,3,0,1,0,2,0,0,1,2,0,2,0,1,1,0,0,2,0,2,0,3,0\n" +
@@ -76,8 +73,7 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2007_08", "Primera División 2007/08", rawData));
 	}
 
-	private void initialiseGroup_PrimeraDivision_2008_09()
-	{
+	private void initialiseGroup_PrimeraDivision_2008_09() {
 		String rawData =
 			"FC Barcelona,?,2,0,4,0,6,1,3,3,4,0,5,0,6,0,3,1,1,2,5,0,1,1,2,0,3,1,6,0,0,1,1,1,3,2,4,1,2,0\n" +
 			"R. Madrid,2,6,?,3,4,1,1,1,0,1,0,1,0,4,3,1,3,2,2,3,0,1,0,3,2,7,1,2,0,3,1,3,2,6,1,4,3,1,0\n" +
@@ -102,8 +98,7 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2008_09", "Primera División 2008/09", rawData));
 	}
 
-	private void initialiseGroup_PrimeraDivision_2009_10()
-	{
+	private void initialiseGroup_PrimeraDivision_2009_10() {
 		String rawData =
 			"FC Barcelona,?,1,0,3,0,4,0,4,2,2,1,1,1,4,1,5,2,3,0,1,0,2,0,1,0,6,1,3,0,4,0,2,1,4,1,4,0,3,1\n" +
 			"R. Madrid,0,2,?,2,0,3,2,2,0,2,0,6,2,5,1,3,2,3,2,3,0,3,2,4,2,6,0,3,1,1,0,2,0,3,0,4,2,5,0\n" +
@@ -128,8 +123,7 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2009_10", "Primera División 2009/10", rawData));
 	}
 
-	private void initialiseGroup_PrimeraDivision_2010_11()
-	{
+	private void initialiseGroup_PrimeraDivision_2010_11() {
 		String rawData =
 			"FC Barcelona,?,5,0,2,1,3,1,5,0,2,1,3,0,2,0,2,0,1,0,4,1,3,0,1,0,5,0,2,1,2,1,1,1,0,0,0,2,3,1\n" +
 			"R. Madrid,1,1,?,2,0,4,2,1,0,5,1,2,0,3,0,1,0,0,1,7,0,6,1,2,3,4,1,2,0,4,0,1,0,6,1,2,0,8,1\n" +
@@ -154,8 +148,7 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2010_11", "Primera División 2010/11", rawData));
 	}
 
-	private void initialiseGroup_PrimeraDivision_2011_12()
-	{
+	private void initialiseGroup_PrimeraDivision_2011_12() {
 		String rawData =
 			"R. Madrid,?,1,3,0,0,1,1,4,1,4,2,7,1,4,1,3,0,4,1,5,1,4,2,4,1,5,0,6,2,3,1,5,1,3,0,3,1,4,0\n" +
 			"FC Barcelona,1,2,?,5,1,4,1,5,0,5,0,8,0,5,0,0,0,2,0,2,1,4,0,4,2,4,0,4,0,4,0,5,3,5,0,3,1,3,0\n" +
@@ -180,14 +173,12 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2011_12", "Primera División 2011/12", rawData));
 	}
 
-	private void printGroups()
-	{
+	private void printGroups() {
 		for (Group group : groups)
 			group.print(System.out);
 	}
 
-	private void initialiseGroup_A()
-	{
+	private void initialiseGroup_A() {
 		Group group = new Group("A", "Gruppe A");
 		groups.add(group);
 
@@ -228,8 +219,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_B()
-	{
+	private void initialiseGroup_B() {
 		Group group = new Group("B", "Gruppe B");
 		groups.add(group);
 
@@ -270,8 +260,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_C()
-	{
+	private void initialiseGroup_C() {
 		Group group = new Group("C", "Gruppe C");
 		groups.add(group);
 
@@ -312,8 +301,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_D()
-	{
+	private void initialiseGroup_D() {
 		Group group = new Group("D", "Gruppe D");
 		groups.add(group);
 
@@ -354,8 +342,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_Dummy1()
-	{
+	private void initialiseGroup_Dummy1() {
 		Group group = new Group("X1", "Gruppe Dummy1");
 		groups.add(group);
 
@@ -396,8 +383,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_Dummy2()
-	{
+	private void initialiseGroup_Dummy2() {
 		Group group = new Group("X2", "Gruppe Dummy2");
 		groups.add(group);
 
@@ -438,8 +424,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_Dummy3()
-	{
+	private void initialiseGroup_Dummy3() {
 		Group group = new Group("X3", "Gruppe Dummy3");
 		groups.add(group);
 
@@ -480,8 +465,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_Dummy4()
-	{
+	private void initialiseGroup_Dummy4() {
 		Group group = new Group("X4", "Gruppe Dummy4");
 		groups.add(group);
 

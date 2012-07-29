@@ -15,16 +15,14 @@ public class Table
 
 	public Table() { }
 
-	public Table(Iterable<Team> teams, Iterable<Match> matches)
-	{
+	public Table(Iterable<Team> teams, Iterable<Match> matches) {
 		for (Team team : teams)
 			addTeam(team);
 		for (Match match : matches)
 			addMatch(match);
 	}
 
-	public void calculate()
-	{
+	public void calculate() {
 		// Reset explicit ranking to enable automatic ranking via compareTo
 		clearRanks();
 
@@ -68,8 +66,7 @@ public class Table
 		rows.updateAllMarked();
 	}
 
-	public void clearRanks()
-	{
+	public void clearRanks() {
 		for (Row row : rows) {
 			row.rank = 0;
 			// Clearing the "main table order" helper field is optional, but it might be safer to do it anyway.
@@ -79,8 +76,7 @@ public class Table
 		rows.updateAllMarked();
 	}
 
-	private int calculateSubTable(Table subTable, int currentRank)
-	{
+	private int calculateSubTable(Table subTable, int currentRank) {
 		for (Match match : matches) {
 			try {
 				subTable.addMatch(match);
@@ -113,8 +109,7 @@ public class Table
 		return currentRank + skipRank;
 	}
 
-	public void print(PrintStream out, String indent)
-	{
+	public void print(PrintStream out, String indent) {
 		out.println(indent + "Pos  Team          Pld    W    D    L   GF   GA   GD  Pts");
 		out.println(indent + "---  ------------  ---  ---  ---  ---  ---  ---  ---  ---");
 		for (Row row : rows)
@@ -122,8 +117,7 @@ public class Table
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder
 			.append("Table [rows=")
@@ -131,15 +125,13 @@ public class Table
 		return builder.toString();
 	}
 
-	public void addTeam(Team team)
-	{
+	public void addTeam(Team team) {
 		teams.add(team);
 		if (getRow(team) == null)
 			rows.add(new Row(team));
 	}
 
-	public void addMatch(Match match)
-	{
+	public void addMatch(Match match) {
 		if (! teams.contains(match.getHomeTeam()))
 			throw new IllegalArgumentException("Home team \"" + match.getHomeTeam() + "\" not found in team list");
 		if (! teams.contains(match.getGuestTeam()))
@@ -150,8 +142,7 @@ public class Table
 		}
 	}
 
-	private Row getRow(Team team)
-	{
+	private Row getRow(Team team) {
 		for (Row row : rows) {
 			if (row.team.equals(team))
 				return row;
@@ -159,8 +150,7 @@ public class Table
 		return null;
 	}
 
-	class Row implements Comparable<Row>, Updateable
-	{
+	class Row implements Comparable<Row>, Updateable {
 		private Team team;
 
 		// Rank calculated from match statistics in main & sub-tables
@@ -180,8 +170,7 @@ public class Table
 		// results in multiple identical ranks and we have to consider overall goals.
 		private int mainTableOrder  = 0;
 
-		private Row(Team team)
-		{
+		private Row(Team team) {
 			this.team = team;
 			update();
 		}
@@ -190,13 +179,11 @@ public class Table
 		 * @param newValue is currently ignored and only needed to fulfil the
 		 * {@link de.scrum_master.util.UpdateableTreeSet.Updateable Updateable} contract
 		 */
-		public void update(Object newValue)
-		{
+		public void update(Object newValue) {
 			update();
 		}
 
-		public void update()
-		{
+		public void update() {
 			points          = 0;
 			matchesPlayed   = 0;
 			matchesWon      = 0;
@@ -248,8 +235,7 @@ public class Table
 			}
 		}
 
-		public int compareTo(Row other)
-		{
+		public int compareTo(Row other) {
 			if (this.equals(other))
 				return 0;
 
@@ -296,8 +282,7 @@ public class Table
 			return team.getId().compareTo(other.team.getId());
 		}
 
-		private boolean matchDataEquals(Row other)
-		{
+		private boolean matchDataEquals(Row other) {
 			if (this == other)
 				return true;
 			if (other == null)
@@ -315,8 +300,7 @@ public class Table
 			return true;
 		}
 
-		private void print(PrintStream out, String indent)
-		{
+		private void print(PrintStream out, String indent) {
 			out.println(String.format(
 				indent + "%3d  %-12s  %3d  %3d  %3d  %3d  %3d  %3d  %3d  %3d",
 				rank, team.getName(),
@@ -327,8 +311,7 @@ public class Table
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder
 				.append("Row [team=").append(team).append(", rank=")

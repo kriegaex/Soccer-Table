@@ -2,8 +2,7 @@ package de.scrum_master.soccer;
 
 import java.util.Calendar;
 
-class Match implements Comparable<Match>
-{
+class Match implements Comparable<Match> {
 	private String id;
 	private Calendar date;
 	private Team homeTeam;
@@ -11,8 +10,7 @@ class Match implements Comparable<Match>
 	private int homeScore = -1;
 	private int guestScore = -1;
 
-	Match(Calendar date, Team homeTeam, Team guestTeam, int homeScore, int guestScore)
-	{
+	Match(Calendar date, Team homeTeam, Team guestTeam, int homeScore, int guestScore) {
 		this.date = date;
 		this.homeTeam = homeTeam;
 		this.guestTeam = guestTeam;
@@ -21,13 +19,11 @@ class Match implements Comparable<Match>
 		this.id = homeTeam.getId() + "-" + guestTeam.getId();
 	}
 
-	Match(Calendar date, Team homeTeam, Team guestTeam)
-	{
+	Match(Calendar date, Team homeTeam, Team guestTeam) {
 		this(date, homeTeam, guestTeam, -1, -1);
 	}
 
-	public int compareTo(Match match)
-	{
+	public int compareTo(Match match) {
 		int result = getDate().compareTo(match.getDate());
 		if (result != 0)
 			return result;
@@ -35,38 +31,31 @@ class Match implements Comparable<Match>
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return getId();
 	}
 
-	String getId()
-	{
+	String getId() {
 		return id;
 	}
 
-	Calendar getDate()
-	{
+	Calendar getDate() {
 		return date;
 	}
 
-	Team getHomeTeam()
-	{
+	Team getHomeTeam() {
 		return homeTeam;
 	}
 
-	Team getGuestTeam()
-	{
+	Team getGuestTeam() {
 		return guestTeam;
 	}
 
-	int getHomeScore()
-	{
+	int getHomeScore() {
 		return homeScore;
 	}
 
-	int getGuestScore()
-	{
+	int getGuestScore() {
 		return guestScore;
 	}
 }
