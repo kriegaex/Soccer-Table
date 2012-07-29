@@ -23,7 +23,7 @@ class Group implements Comparable<Group>
 	{
 		return id.compareTo(group.id);
 	}
-	
+
 	void addTeam(Team team)
 	{
 		teams.add(team);
@@ -81,7 +81,7 @@ class Group implements Comparable<Group>
 		}
 		table.calculate();
 		table.print(out, "  ");
-		out.println();		
+		out.println();
 	}
 
 	@Override

@@ -39,18 +39,18 @@ import java.util.TreeSet;
  *         // Change the receiver's value
  *     }
  * }
- * 
+ *
  * SortedSet<MyType> mySortedSet = new UpdateableTreeSet<MyType>();
- * 
+ *
  * // Add elements to mySortedSet...
- * 
+ *
  * for (MyType element : mySortedSet) {
  *     if (removeCondition)
  *         markForRemoval(element);
  *     if (updateCondition)
  *         markForUpdate(element, newValue);
  * }
- * 
+ *
  * mySortedSet.updateAllMarked();
  * </pre>
  * Special thanks go to user <a href="http://stackoverflow.com/users/15472/tucuxi">tucuxi at stackoverflow.com</a>
@@ -65,7 +65,7 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 	/**
 	 * UpdateableTreeSet elements must implement this interface in order to provide a structured way
 	 * of updating themselves at the right moment during an update operation, i.e. after temporary
-	 * removal from the collection and before being added back into the collection. 
+	 * removal from the collection and before being added back into the collection.
 	 *
 	 * @author Alexander Kriegisch, <a href="http://scrum-master.de">Scrum-Master.de</a>
 	 */
@@ -73,7 +73,7 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 		/**
 		 * Update method for elements which do not need to be given new values, but have a way
 		 * of updating themselves in another way. If you do not need this method, just specify
-		 * a version calling {@link #update(Object)} with a null value.  
+		 * a version calling {@link #update(Object)} with a null value.
 		 */
 		void update();
 
@@ -89,7 +89,7 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 
 	// Use identity maps so as to avoid compareTo and possibly to have double candidates in the lists
 	// if 'put' is called multiple times for the same element in different states (thus with different
-	// keys at the time of insertion). BTW: Too bad there is no identity set for 'toBeRemoved'. :-( 
+	// keys at the time of insertion). BTW: Too bad there is no identity set for 'toBeRemoved'. :-(
 	private Map<E, Object> toBeUpdated = new IdentityHashMap<E, Object>();
 	private Map<E, Object> toBeRemoved = new IdentityHashMap<E, Object>();
 
@@ -114,14 +114,14 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 	 * <p>
 	 * <b>Attention:</b> Beware of manually modifying a marked element before its scheduled
 	 * update. It might not be found anymore (and thus not removed) because of its changed key,
-	 * which later could lead to strange double entries in the collection. 
+	 * which later could lead to strange double entries in the collection.
 	 */
 	public void markForUpdate(E element, Object newValue) {
 		toBeUpdated.put(element, newValue);
 	}
 
 	/**
-	 * Convenience method passing a null value to {@link #markForUpdate(Updateable, Object)} 
+	 * Convenience method passing a null value to {@link #markForUpdate(Updateable, Object)}
 	 */
 	public void markForUpdate(E element) {
 		toBeUpdated.put(element, null);
@@ -132,7 +132,7 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 	 * <p>
 	 * <b>Attention:</b> Beware of manually modifying a marked element before its scheduled
 	 * removal. It might not be found anymore (and thus not removed) because of its changed key,
-	 * which later could lead to strange double entries in the collection. 
+	 * which later could lead to strange double entries in the collection.
 	 */
 	public void markForRemoval(E element) {
 		toBeRemoved.put(element, null);
@@ -149,8 +149,8 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 	 * so you can start to mark other elements afterwards.
 	 * <p>
 	 * Please note that if any remove or update action fails, this will be silently ignored as long
-	 * as there are no exceptions. 
-	 * <p> 
+	 * as there are no exceptions.
+	 * <p>
 	 * <b>Attention:</b> Do not call this method while looping over the collection and beware of
 	 * manually modifying any marked elements before their scheduled update/removal. They might
 	 * not be found anymore (and thus not removed) because of their changed keys, which later
@@ -177,10 +177,10 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 	 * <b>Attention:</b> Do not call this method while looping over the collection.
 	 *
 	 * @param element the element to be updated
-	 * @param newValue element's new value (if any) 
-	 * 
+	 * @param newValue element's new value (if any)
+	 *
 	 * @return true if element was found in collection and updated (i.e. removed and
-	 * added back) successfully 
+	 * added back) successfully
 	 */
 	public synchronized boolean update(E element, Object newValue) {
 		if (remove(element)) {
@@ -191,7 +191,7 @@ public class UpdateableTreeSet<E extends UpdateableTreeSet.Updateable> extends T
 	}
 
 	/**
-	 * Convenience method passing a null value to {@link #update(Updateable, Object)} 
+	 * Convenience method passing a null value to {@link #update(Updateable, Object)}
 	 */
 	public boolean update(E element) {
 		return update(element, null);

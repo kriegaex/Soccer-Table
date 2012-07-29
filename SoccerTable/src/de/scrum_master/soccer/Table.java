@@ -27,7 +27,7 @@ public class Table
 	{
 		// Reset explicit ranking to enable automatic ranking via compareTo
 		clearRanks();
-	
+
 		// Main ranking + sub-tables
 		Table subTable = new Table();
 		int currentPoints = rows.first().points;
@@ -49,8 +49,8 @@ public class Table
 		// Sub-row ranking (direct comparison), continued
 		calculateSubTable(subTable, currentRank);
 		rows.updateAllMarked();
-	
-		// Fine ranking for identical sub-table ranks: goal difference and goals scored *overall* 
+
+		// Fine ranking for identical sub-table ranks: goal difference and goals scored *overall*
 		Row previousRow = null;
 		for (Row row : rows) {
 			if (previousRow != null) {
@@ -72,7 +72,7 @@ public class Table
 	{
 		for (Row row : rows) {
 			row.rank = 0;
-			// Clearing the "main table order" helper field is optional, but it might be safer to do it anyway. 
+			// Clearing the "main table order" helper field is optional, but it might be safer to do it anyway.
 			row.mainTableOrder = 0;
 			rows.markForUpdate(row);
 		}
@@ -89,14 +89,14 @@ public class Table
 				// Only add matches between sub-table teams, ignore others
 			}
 		}
-	
+
 		PrintStream out = Config.DEBUG_STREAM;
 		if (out != null && subTable.rows.size() > 1) {
 			out.println("    ======================= Sub-table =======================");
 			subTable.print(out, "    ");
 			out.println("    =========================================================\n");
 		}
-	
+
 		Row previousSubRow = null;
 		int skipRank = 0;
 		for (Row subRow : subTable.rows) {
@@ -179,7 +179,7 @@ public class Table
 		// Helper field for remembering original order in main table if sub-table ranking
 		// results in multiple identical ranks and we have to consider overall goals.
 		private int mainTableOrder  = 0;
-		
+
 		private Row(Team team)
 		{
 			this.team = team;
@@ -215,7 +215,7 @@ public class Table
 
 				matchesPlayed++;
 				if (team.equals(match.getHomeTeam())) {
-					goalsFor = goalsFor + match.getHomeScore(); 
+					goalsFor = goalsFor + match.getHomeScore();
 					goalsAgainst = goalsAgainst + match.getGuestScore();
 					if (match.getHomeScore() > match.getGuestScore()) {
 						matchesWon++;
@@ -230,7 +230,7 @@ public class Table
 					}
 				}
 				else {
-					goalsFor = goalsFor + match.getGuestScore(); 
+					goalsFor = goalsFor + match.getGuestScore();
 					goalsAgainst = goalsAgainst + match.getHomeScore();
 					if (match.getHomeScore() < match.getGuestScore()) {
 						matchesWon++;

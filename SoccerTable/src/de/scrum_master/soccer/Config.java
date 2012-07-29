@@ -9,13 +9,13 @@ class Config
 {
 	private SortedSet<Group> groups = new TreeSet<Group>();
 
-	// Real groups from Euro 2012
-	private static final boolean REAL_GROUPS = false;  
-	// Dummy groups for special ranking situations
-	private static final boolean DUMMY_GROUPS = true;  
+	// Real Euro 2012 groups
+	private static final boolean EURO_2012_GROUPS = false;
+	// Dummy groups (Euro 2012, group D, manipulated results) for special ranking situations
+	private static final boolean DUMMY_GROUPS = false;
 
 	// Set to null if no sub-table printing is required
-	static final PrintStream DEBUG_STREAM = System.out;  
+	static final PrintStream DEBUG_STREAM = System.out;
 
 	public static void main(String[] args)
 	{
@@ -27,7 +27,7 @@ class Config
 	private void initialiseGroups()
 	{
 		groups.clear();
-		if (REAL_GROUPS) {
+		if (EURO_2012_GROUPS) {
 			initialiseGroup_A();
 			initialiseGroup_B();
 			initialiseGroup_C();
