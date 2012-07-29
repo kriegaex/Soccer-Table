@@ -186,7 +186,7 @@ class Config
 		 *   overall GD order because direct comparison says: Sevilla 7 points, Bilbao 6, Atletico 4.
 		 * - Saragossa (-13) is ranked higher than Sociedad (-17) and Levante (-11), so even though
 		 *   Levante has the best overall GD they lose out in direct comparison by points (4) against
-		 *   Saragossa (0) and by GF (5) at equal GD (-1) against Sociedad (GF 4).
+		 *   Saragossa (9) and by GF (5) at equal GD (-1) against Sociedad (GF 4).
 		 */
 		String rawData =
 			"FC Barcelona,?,5,0,2,1,3,1,5,0,2,1,3,0,2,0,2,0,1,0,4,1,3,0,1,0,5,0,2,1,2,1,1,1,0,0,0,2,3,1\n" +
