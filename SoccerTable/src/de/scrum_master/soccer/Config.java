@@ -28,28 +28,28 @@ class Config
 	private void initialiseGroups() {
 		groups.clear();
 		if (PRIMERA_DIVISION_GROUPS) {
-			initialiseGroup_PrimeraDivision_2006_07();
-			initialiseGroup_PrimeraDivision_2007_08();
-			initialiseGroup_PrimeraDivision_2008_09();
-			initialiseGroup_PrimeraDivision_2009_10();
-			initialiseGroup_PrimeraDivision_2010_11();
-			initialiseGroup_PrimeraDivision_2011_12();
+			initialise_Primera_Division_2006_07();
+			initialise_Primera_Division_2007_08();
+			initialise_Primera_Division_2008_09();
+			initialise_Primera_Division_2009_10();
+			initialise_Primera_Division_2010_11();
+			initialise_Primera_Division_2011_12();
 		}
 		if (EURO_2012_GROUPS) {
-			initialiseGroup_A();
-			initialiseGroup_B();
-			initialiseGroup_C();
-			initialiseGroup_D();
+			initialise_Euro_2012_Group_A();
+			initialise_Euro_2012_Group_B();
+			initialise_Euro_2012_Group_C();
+			initialise_Euro_2012_Group_D();
 		}
 		if (DUMMY_GROUPS) {
-			initialiseGroup_Dummy1();
-			initialiseGroup_Dummy2();
-			initialiseGroup_Dummy3();
-			initialiseGroup_Dummy4();
+			initialise_Dummy_1();
+			initialise_Dummy_2();
+			initialise_Dummy_3();
+			initialise_Dummy_4();
 		}
 	}
 
-	private void initialiseGroup_PrimeraDivision_2006_07() {
+	private void initialise_Primera_Division_2006_07() {
 		/*
 		 * - Real wins the championship against Barca, both having 76 points, even though
 		 *   Barca's goal difference (GD) is +45 while Real's is just +26. But in direct
@@ -81,7 +81,7 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2006_07", "Primera División 2006/07", rawData));
 	}
 
-	private void initialiseGroup_PrimeraDivision_2007_08() {
+	private void initialise_Primera_Division_2007_08() {
 		/*
 		 * - Atletico (GD +19) is ranked higher than Sevilla (GD +26) because of direct
 		 *   comparison: 6 points Atletico, 0 Sevilla.
@@ -114,7 +114,7 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2007_08", "Primera División 2007/08", rawData));
 	}
 
-	private void initialiseGroup_PrimeraDivision_2008_09() {
+	private void initialise_Primera_Division_2008_09() {
 		/*
 		 * - Almeria (GD -16) is ranked higher than Santander (GD +1) even though Santander's
 		 *   GD is positive and Ameria's clearly negative, because direct comparison says:
@@ -151,7 +151,7 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2008_09", "Primera División 2008/09", rawData));
 	}
 
-	private void initialiseGroup_PrimeraDivision_2009_10() {
+	private void initialise_Primera_Division_2009_10() {
 		/*
 		 * - Teneriffa (GD -34) and Valladolid (GD -25) are tied for points and in direct comparison,
 		 *   so now overall GD kicks in, ranking Valladolid higher than Teneriffa.
@@ -180,7 +180,7 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2009_10", "Primera División 2009/10", rawData));
 	}
 
-	private void initialiseGroup_PrimeraDivision_2010_11() {
+	private void initialise_Primera_Division_2010_11() {
 		/*
 		 * - Sevilla (GD +1), Bilbao (GD +4) and Atletico (GD +9) are ranked in opposite
 		 *   overall GD order because direct comparison says: Sevilla 7 points, Bilbao 6, Atletico 4.
@@ -212,7 +212,7 @@ class Config
 		groups.add(Group.parseCrossTable("PD_2010_11", "Primera División 2010/11", rawData));
 	}
 
-	private void initialiseGroup_PrimeraDivision_2011_12() {
+	private void initialise_Primera_Division_2011_12() {
 		/*
 		 * - Getafe (GD -11) is ranked higher than Sociedad (GD -6) and Betis (GD -9) even though the
 		 *   overall GD is the worst of the three teams, because in direct comparison it is 8 points Getafe,
@@ -247,7 +247,7 @@ class Config
 			group.print(System.out);
 	}
 
-	private void initialiseGroup_A() {
+	private void initialise_Euro_2012_Group_A() {
 		Group group = new Group("A", "Gruppe A");
 		groups.add(group);
 
@@ -288,7 +288,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_B() {
+	private void initialise_Euro_2012_Group_B() {
 		Group group = new Group("B", "Gruppe B");
 		groups.add(group);
 
@@ -329,7 +329,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_C() {
+	private void initialise_Euro_2012_Group_C() {
 		Group group = new Group("C", "Gruppe C");
 		groups.add(group);
 
@@ -370,7 +370,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_D() {
+	private void initialise_Euro_2012_Group_D() {
 		Group group = new Group("D", "Gruppe D");
 		groups.add(group);
 
@@ -411,7 +411,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_Dummy1() {
+	private void initialise_Dummy_1() {
 		Group group = new Group("X1", "Gruppe Dummy1");
 		groups.add(group);
 
@@ -452,7 +452,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_Dummy2() {
+	private void initialise_Dummy_2() {
 		Group group = new Group("X2", "Gruppe Dummy2");
 		groups.add(group);
 
@@ -493,7 +493,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_Dummy3() {
+	private void initialise_Dummy_3() {
 		Group group = new Group("X3", "Gruppe Dummy3");
 		groups.add(group);
 
@@ -534,7 +534,7 @@ class Config
 		));
 	}
 
-	private void initialiseGroup_Dummy4() {
+	private void initialise_Dummy_4() {
 		Group group = new Group("X4", "Gruppe Dummy4");
 		groups.add(group);
 
