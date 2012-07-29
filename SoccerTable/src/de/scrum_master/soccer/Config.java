@@ -50,6 +50,13 @@ class Config
 	}
 
 	private void initialiseGroup_PrimeraDivision_2006_07() {
+		/*
+		 * - Real wins the championship against Barca, both having 76 points, even though
+		 *   Barca's goal difference (GD) is +45 while Real's is just +26. But in direct
+		 *   comparison it is 4 points Real, 1 Barca.
+		 * - Espanyol (GD -7) is ranked higher than Mallorca (GD -6) because of direct
+		 *   comparison: 3 points each, but GD +1 Espanyol, GD -1 Mallorca.
+		 */
 		String rawData =
 			"R. Madrid,?,2,0,3,2,2,1,0,0,1,0,1,1,0,3,1,1,3,1,4,3,3,1,3,1,2,0,0,1,0,0,2,1,1,2,2,0,2,0\n" +
 			"FC Barcelona,3,3,?,3,1,1,1,4,0,3,1,1,1,3,0,1,0,2,0,2,2,1,0,2,1,3,0,1,0,1,1,3,0,3,1,1,0,3,0\n" +
@@ -75,6 +82,14 @@ class Config
 	}
 
 	private void initialiseGroup_PrimeraDivision_2007_08() {
+		/*
+		 * - Atletico (GD +19) is ranked higher than Sevilla (GD +26) because of direct
+		 *   comparison: 6 points Atletico, 0 Sevilla.
+		 * - Almeria (GD -3) is ranked higher than La Coruna (GD -1) because of direct
+		 *   comparison: 6 points Almeria, 0 La Coruna.
+		 * - Betis (GD -6) is ranked higher than Getafe (GD -4) because of direct
+		 *   comparison: 4 points Betis, 1 Getafe.
+		 */
 		String rawData =
 			"R. Madrid,?,3,2,4,1,2,1,3,1,3,1,4,3,3,1,3,1,2,3,3,0,2,1,2,0,0,1,7,0,2,0,2,0,2,0,1,0,5,2\n" +
 			"Villarreal,0,5,?,3,1,3,0,3,2,0,0,1,1,1,1,4,3,3,0,1,0,2,0,0,1,2,0,2,0,1,1,0,0,2,0,2,0,3,0\n" +
@@ -100,6 +115,18 @@ class Config
 	}
 
 	private void initialiseGroup_PrimeraDivision_2008_09() {
+		/*
+		 * - Almeria (GD -16) is ranked higher than Santander (GD +1) even though Santander's
+		 *   GD is positive and Ameria's clearly negative, because direct comparison says:
+		 *   4 points Almeria, 1 Santander.
+		 * - Gijon (GD -32) is ranked higher than Osasuna (GD -6) and Valladolid (GD -12) because in
+		 *   direct comparison they have a clear 12 points, having won all 4 matches against the other
+		 *   two. Osasuna and Valladolid score identically(!) in direct comparison of the three clubs,
+		 *   so then overall GD kicks in, which is better for Osasuna.
+		 * - Like in the previous season, Betis (GD -7) and Getafe (GD -6) are tied for points, this
+		 *   time even direct comparison is totally tied. So overall GD kicks in and this year Getafe
+		 *   is ranked higher than Betis.
+		 */
 		String rawData =
 			"FC Barcelona,?,2,0,4,0,6,1,3,3,4,0,5,0,6,0,3,1,1,2,5,0,1,1,2,0,3,1,6,0,0,1,1,1,3,2,4,1,2,0\n" +
 			"R. Madrid,2,6,?,3,4,1,1,1,0,1,0,1,0,4,3,1,3,2,2,3,0,1,0,3,2,7,1,2,0,3,1,3,2,6,1,4,3,1,0\n" +
@@ -125,6 +152,10 @@ class Config
 	}
 
 	private void initialiseGroup_PrimeraDivision_2009_10() {
+		/*
+		 * - Teneriffa (GD -34) and Valladolid (GD -25) are tied for points and in direct comparison,
+		 *   so now overall GD kicks in, ranking Valladolid higher than Teneriffa.
+		 */
 		String rawData =
 			"FC Barcelona,?,1,0,3,0,4,0,4,2,2,1,1,1,4,1,5,2,3,0,1,0,2,0,1,0,6,1,3,0,4,0,2,1,4,1,4,0,3,1\n" +
 			"R. Madrid,0,2,?,2,0,3,2,2,0,2,0,6,2,5,1,3,2,3,2,3,0,3,2,4,2,6,0,3,1,1,0,2,0,3,0,4,2,5,0\n" +
@@ -150,6 +181,13 @@ class Config
 	}
 
 	private void initialiseGroup_PrimeraDivision_2010_11() {
+		/*
+		 * - Sevilla (GD +1), Bilbao (GD +4) and Atletico (GD +9) are ranked in opposite
+		 *   overall GD order because direct comparison says: Sevilla 7 points, Bilbao 6, Atletico 4.
+		 * - Saragossa (-13) is ranked higher than Sociedad (-17) and Levante (-11), so even though
+		 *   Levante has the best overall GD they lose out in direct comparison by points (4) against
+		 *   Saragossa (0) and by GF (5) at equal GD (-1) against Sociedad (GF 4).
+		 */
 		String rawData =
 			"FC Barcelona,?,5,0,2,1,3,1,5,0,2,1,3,0,2,0,2,0,1,0,4,1,3,0,1,0,5,0,2,1,2,1,1,1,0,0,0,2,3,1\n" +
 			"R. Madrid,1,1,?,2,0,4,2,1,0,5,1,2,0,3,0,1,0,0,1,7,0,6,1,2,3,4,1,2,0,4,0,1,0,6,1,2,0,8,1\n" +
@@ -175,6 +213,11 @@ class Config
 	}
 
 	private void initialiseGroup_PrimeraDivision_2011_12() {
+		/*
+		 * - Getafe (GD -11) is ranked higher than Sociedad (GD -6) and Betis (GD -9) even though the
+		 *   overall GD is the worst of the three teams, because in direct comparison it is 8 points Getafe,
+		 *   5 points Sociedad, 2 points Betis.
+		 */
 		String rawData =
 			"R. Madrid,?,1,3,0,0,1,1,4,1,4,2,7,1,4,1,3,0,4,1,5,1,4,2,4,1,5,0,6,2,3,1,5,1,3,0,3,1,4,0\n" +
 			"FC Barcelona,1,2,?,5,1,4,1,5,0,5,0,8,0,5,0,0,0,2,0,2,1,4,0,4,2,4,0,4,0,4,0,5,3,5,0,3,1,3,0\n" +
