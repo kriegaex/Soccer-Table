@@ -49,6 +49,11 @@ class Config
 		}
 	}
 
+	private void printGroups() {
+		for (Group group : groups)
+			group.print(System.out);
+	}
+
 	private void initialise_Primera_Division_2006_07() {
 		/*
 		 * - Real wins the championship against Barca, both having 76 points, even though
@@ -240,11 +245,6 @@ class Config
 			"Gijon,0,3,0,1,0,1,2,1,1,1,3,2,1,1,2,3,1,0,1,1,1,2,2,1,2,1,1,2,2,1,1,2,2,0,2,3,?,0,0\n" +
 			"Santander,0,0,0,2,2,2,1,3,0,0,0,0,2,4,0,3,0,3,0,1,0,0,1,2,1,0,0,1,1,1,1,0,0,1,1,0,1,1,?\n";
 		groups.add(Group.parseCrossTable("PD_2011_12", "Primera División 2011/12", rawData));
-	}
-
-	private void printGroups() {
-		for (Group group : groups)
-			group.print(System.out);
 	}
 
 	private void initialise_Euro_2012_Group_A() {
