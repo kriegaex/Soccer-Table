@@ -202,11 +202,11 @@ public class Table
 
 				matchesPlayed++;
 				if (team.equals(match.getHomeTeam())) {
-					goalsFor = goalsFor + match.getHomeScore();
-					goalsAgainst = goalsAgainst + match.getGuestScore();
+					goalsFor += match.getHomeScore();
+					goalsAgainst += match.getGuestScore();
 					if (match.getHomeScore() > match.getGuestScore()) {
 						matchesWon++;
-						points = points + 3;
+						points += + 3;
 					}
 					else if (match.getHomeScore() == match.getGuestScore()) {
 						matchesDrawn++;
@@ -217,8 +217,8 @@ public class Table
 					}
 				}
 				else {
-					goalsFor = goalsFor + match.getGuestScore();
-					goalsAgainst = goalsAgainst + match.getHomeScore();
+					goalsFor += match.getGuestScore();
+					goalsAgainst += match.getHomeScore();
 					if (match.getHomeScore() < match.getGuestScore()) {
 						matchesWon++;
 						points = points + 3;
