@@ -88,9 +88,9 @@ public class Table
 
 		PrintStream out = Config.DEBUG_STREAM;
 		if (out != null && subTable.rows.size() > 1) {
-			out.println("    ======================= Sub-table =======================");
+			out.println("    ========================= Sub-table ==========================");
 			subTable.print(out, "    ");
-			out.println("    =========================================================\n");
+			out.println("    ==============================================================\n");
 		}
 
 		Row previousSubRow = null;
@@ -110,8 +110,8 @@ public class Table
 	}
 
 	public void print(PrintStream out, String indent) {
-		out.println(indent + "Pos  Team          Pld    W    D    L   GF   GA   GD  Pts");
-		out.println(indent + "---  ------------  ---  ---  ---  ---  ---  ---  ---  ---");
+		out.println(indent + "Pos  Team          Pld    W    D    L   GF   GA   GD   GW  Pts");
+		out.println(indent + "---  ------------  ---  ---  ---  ---  ---  ---  ---  ---  ---");
 		for (Row row : rows)
 			row.print(out, indent);
 	}
@@ -165,6 +165,7 @@ public class Table
 		private int goalsFor        = 0;  // GF
 		private int goalsAgainst    = 0;  // GA
 		private int goalsDifference = 0;  // GD  (redundant: GF - GA)
+		private int goalsAway       = 0;  // GW  (http://en.wikipedia.org/wiki/Away_goal)
 
 		// Helper field for remembering original order in main table if sub-table ranking
 		// results in multiple identical ranks and we have to consider overall goals.
@@ -192,6 +193,7 @@ public class Table
 			goalsFor        = 0;
 			goalsAgainst    = 0;
 			goalsDifference = 0;
+			goalsAway       = 0;
 
 			for (Match match : Table.this.matches) {
 				if (
@@ -218,6 +220,7 @@ public class Table
 				}
 				else {
 					goalsFor += match.getGuestScore();
+					goalsAway += match.getGuestScore();
 					goalsAgainst += match.getHomeScore();
 					if (match.getHomeScore() < match.getGuestScore()) {
 						matchesWon++;
@@ -302,10 +305,10 @@ public class Table
 
 		private void print(PrintStream out, String indent) {
 			out.println(String.format(
-				indent + "%3d  %-12s  %3d  %3d  %3d  %3d  %3d  %3d  %3d  %3d",
+				indent + "%3d  %-12s  %3d  %3d  %3d  %3d  %3d  %3d  %3d  %3d  %3d",
 				rank, team.getName(),
 				matchesPlayed, matchesWon, matchesDrawn, matchesLost,
-				goalsFor, goalsAgainst, goalsDifference,
+				goalsFor, goalsAgainst, goalsDifference, goalsAway,
 				points
 			));
 		}
@@ -323,6 +326,7 @@ public class Table
 				.append(", goalsFor=").append(goalsFor)
 				.append(", goalsAgainst=").append(goalsAgainst)
 				.append(", goalsDifference=").append(goalsDifference)
+				.append(", goalsAway=").append(goalsAway)
 				.append(", mainTableOrder=").append(mainTableOrder).append("]");
 			return builder.toString();
 		}
