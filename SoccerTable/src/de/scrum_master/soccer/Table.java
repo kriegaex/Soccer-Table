@@ -157,14 +157,14 @@ public class Table
 		private int rank            = 0;
 
 		// Match statistics
-		private int points          = 0;  // redundant
-		private int matchesPlayed   = 0;
-		private int matchesWon      = 0;
-		private int matchesDrawn    = 0;
-		private int matchesLost     = 0;  // redundant
-		private int goalsFor        = 0;
-		private int goalsAgainst    = 0;
-		private int goalsDifference = 0;  // redundant
+		private int points          = 0;  // Pts (redundant: 3 * W + D)
+		private int matchesPlayed   = 0;  // Pld
+		private int matchesWon      = 0;  // W
+		private int matchesDrawn    = 0;  // D
+		private int matchesLost     = 0;  // L   (redundant: Pld - W - D)
+		private int goalsFor        = 0;  // GF
+		private int goalsAgainst    = 0;  // GA
+		private int goalsDifference = 0;  // GD  (redundant: GF - GA)
 
 		// Helper field for remembering original order in main table if sub-table ranking
 		// results in multiple identical ranks and we have to consider overall goals.
