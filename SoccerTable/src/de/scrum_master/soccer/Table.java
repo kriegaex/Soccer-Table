@@ -221,7 +221,7 @@ public class Table
 					goalsAgainst += match.getHomeScore();
 					if (match.getHomeScore() < match.getGuestScore()) {
 						matchesWon++;
-						points = points + 3;
+						points += 3;
 					}
 					else if (match.getHomeScore() == match.getGuestScore()) {
 						matchesDrawn++;
