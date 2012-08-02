@@ -114,7 +114,7 @@ class Group implements Comparable<Group> {
 	}
 
 	void print(PrintStream out) {
-		print(out, true, true);
+		print(out, false, false);
 	}
 
 	void print(PrintStream out, boolean showTeams, boolean showMatches) {
