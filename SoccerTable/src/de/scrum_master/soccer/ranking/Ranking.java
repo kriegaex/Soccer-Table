@@ -16,6 +16,21 @@ public enum Ranking {
 			)
 		)
 	),
+	DIRECT_COMPARISON_WITH_GOALS_AWAY(
+		new PointsComparator(
+			new PointsComparator(
+				null,
+				new GoalsDifferenceComparator(
+					null,
+					new GoalsAwayComparator(null, null)
+				)
+			),
+			new GoalsDifferenceComparator(
+				null,
+				new GoalsForComparator(null, null)
+			)
+		)
+	),
 	GOALS_DIFFERENCE(
 		new PointsComparator(
 			null,
@@ -46,6 +61,7 @@ public enum Ranking {
 	EURO_2012(DIRECT_COMPARISON.comparator),
 	PRIMERA_DIVISION(DIRECT_COMPARISON.comparator),
 	BUNDESLIGA(GOALS_DIFFERENCE.comparator),
+	CHAMPIONS_LEAGUE_GROUP(DIRECT_COMPARISON_WITH_GOALS_AWAY.comparator),
 	CHAMPIONS_LEAGUE_KO(GOALS_AWAY.comparator);
 
 	public final TableRowComparator comparator;
