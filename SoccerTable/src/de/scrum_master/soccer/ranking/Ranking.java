@@ -41,10 +41,13 @@ public enum Ranking {
 						null,
 						new GoalsDifferenceComparator(
 							null,
-							new GoalsForComparator(null, null)
+							new GoalsForComparator(
+								null,
+								new GoalsAwayComparator(null, null)
+							)
 						)
 					),
-					null
+					new GoalsAwayComparator(null, null)
 				)
 			)
 		)
