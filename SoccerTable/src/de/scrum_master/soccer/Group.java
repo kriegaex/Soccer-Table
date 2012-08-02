@@ -53,7 +53,7 @@ class Group implements Comparable<Group> {
 		Scanner scanner = new Scanner(rawData);
 		scanner.useDelimiter("[,\n]");
 		while (scanner.hasNext()) {
-			String teamName = scanner.next();
+			String teamName = scanner.next().trim();
 			group.addTeam(new Team(teamName, teamName));
 			teams.add(group.getTeam(teamName));
 			scanner.nextLine();
