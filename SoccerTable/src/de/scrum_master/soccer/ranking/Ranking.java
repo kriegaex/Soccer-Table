@@ -34,11 +34,11 @@ public enum Ranking {
 				null, new GoalsAwayComparator(null, null)))
 	),
 	// Alias names
-	EURO_2012              (DIRECT_COMPARISON.comparator),
-	PRIMERA_DIVISION       (DIRECT_COMPARISON.comparator),
-	BUNDESLIGA             (GOALS_DIFFERENCE.comparator),
+	EURO_2012              (DIRECT_COMPARISON                .comparator),
+	PRIMERA_DIVISION       (DIRECT_COMPARISON                .comparator),
+	BUNDESLIGA             (GOALS_DIFFERENCE                 .comparator),
 	CHAMPIONS_LEAGUE_GROUP (DIRECT_COMPARISON_WITH_GOALS_AWAY.comparator),
-	CHAMPIONS_LEAGUE_KO    (GOALS_AWAY.comparator);
+	CHAMPIONS_LEAGUE_KO    (GOALS_AWAY                       .comparator);
 
 	public final TableRowComparator comparator;
 
