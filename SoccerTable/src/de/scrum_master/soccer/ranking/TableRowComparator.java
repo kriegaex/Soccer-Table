@@ -2,6 +2,7 @@ package de.scrum_master.soccer.ranking;
 
 import java.util.Comparator;
 
+import de.scrum_master.soccer.Config;
 import de.scrum_master.soccer.Match;
 import de.scrum_master.soccer.Table;
 import de.scrum_master.soccer.Table.Row;
@@ -39,6 +40,12 @@ public abstract class TableRowComparator implements Comparator<Table.Row> {
 					subTable.addMatch(match);
 			}
 			subTable.refresh();
+			if (Config.DEBUG_STREAM != null) {
+				// Attention: sub-table might be printed multiple times, depending on how often 'compare' is called.
+				// So this is just for tracing/debugging the system, not anything beautiful.
+				subTable.print(Config.DEBUG_STREAM, "    ");
+				Config.DEBUG_STREAM.println();
+			}
 			int result = child.compare(subTable.getRow(row1.getTeam()), subTable.getRow(row2.getTeam()));
 			if (result != 0)
 				return result;

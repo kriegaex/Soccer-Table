@@ -6,8 +6,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import de.scrum_master.soccer.ranking.Ranking;
+import de.scrum_master.soccer.ranking.TableRowComparator;
 
-class Config
+public class Config
 {
 	private SortedSet<Group> groups = new TreeSet<Group>();
 
@@ -18,8 +19,9 @@ class Config
 	// Dummy groups (Euro 2012, group D, manipulated results) for special ranking situations
 	private static final boolean DUMMY_GROUPS = true;
 
-	// Set to null if no sub-table printing is required
-	static final PrintStream DEBUG_STREAM = System.out;
+	// Assign non-null value to activate sub-table printing.
+	// Attention: sub-table might be printed multiple times. So this is just for tracing/debugging the system.
+	public static PrintStream DEBUG_STREAM = null;
 
 	public static void main(String[] args) {
 		Config config = new Config();
