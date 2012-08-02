@@ -2,7 +2,7 @@ package de.scrum_master.soccer;
 
 import java.util.Calendar;
 
-class Match implements Comparable<Match> {
+public class Match implements Comparable<Match> {
 	private String id;
 	private Calendar date;
 	private Team homeTeam;
@@ -43,11 +43,11 @@ class Match implements Comparable<Match> {
 		return date;
 	}
 
-	Team getHomeTeam() {
+	public Team getHomeTeam() {
 		return homeTeam;
 	}
 
-	Team getGuestTeam() {
+	public Team getGuestTeam() {
 		return guestTeam;
 	}
 

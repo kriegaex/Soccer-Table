@@ -1,6 +1,6 @@
 package de.scrum_master.soccer;
 
-class Team implements Comparable<Team> {
+public class Team implements Comparable<Team> {
 	private String id;
 	private String name;
 
@@ -41,7 +41,7 @@ class Team implements Comparable<Team> {
 		return name;
 	}
 
-	String getId() {
+	public String getId() {
 		return id;
 	}
 
