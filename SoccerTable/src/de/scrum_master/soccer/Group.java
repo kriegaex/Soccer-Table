@@ -8,6 +8,8 @@ import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import de.scrum_master.soccer.ranking.TableRowComparator;
+
 class Group implements Comparable<Group> {
 	private String id;
 	private String name;
@@ -15,10 +17,10 @@ class Group implements Comparable<Group> {
 	private SortedSet<Match> matches = new TreeSet<Match>();
 	private Table table;
 
-	Group(String id, String name) {
+	Group(String id, String name, TableRowComparator comparator) {
 		this.id = id;
 		this.name = name;
-		table = new Table();
+		table = new Table(comparator);
 	}
 
 	/**
@@ -40,10 +42,11 @@ class Group implements Comparable<Group> {
 	 * <p>
 	 * <b>Please note:</b> The simplified cross-table reformat does <i>not</i> contain any match dates,
 	 * so this method creates synthetic, identical ones without any real-world significance.
+	 * @param comparator table row comparator to use for ranking the resulting table
 	 * @return the Group generated from the cross-table
 	 */
-	static Group parseCrossTable(String id, String name, String rawData) {
-		Group group = new Group(id, name);
+	static Group parseCrossTable(String id, String name, String rawData, TableRowComparator comparator) {
+		Group group = new Group(id, name, comparator);
 
 		// Determine teams
 		List<Team> teams = new ArrayList<Team>();
@@ -133,7 +136,6 @@ class Group implements Comparable<Group> {
 			}
 			out.println();
 		}
-		table.calculate();
 		table.print(out, "  ");
 		out.println();
 	}
