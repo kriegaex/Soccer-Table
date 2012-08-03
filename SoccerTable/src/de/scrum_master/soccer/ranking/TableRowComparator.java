@@ -17,6 +17,16 @@ public abstract class TableRowComparator implements Comparator<Table.Row> {
 		this.successor = successor;
 	}
 
+	protected TableRowComparator() { }
+
+	public final void setChild(TableRowComparator child) {
+		this.child = child;
+	}
+
+	public final void setSuccessor(TableRowComparator successor) {
+		this.successor = successor;
+	}
+
 	@Override
 	public final int compare(Row row1, Row row2) {
 		if (row1 == null && row2 == null)
