@@ -1,6 +1,8 @@
 package de.scrum_master.soccer.ranking;
 
 import java.util.Comparator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.scrum_master.soccer.Config;
 import de.scrum_master.soccer.Match;
@@ -18,6 +20,66 @@ public abstract class TableRowComparator implements Comparator<Table.Row> {
 	}
 
 	protected TableRowComparator() { }
+
+	public static TableRowComparator fromStrategy(String strategy) {
+		// Remove optional spaces
+		strategy = strategy.replaceAll(" ", "");
+		// Anything left to parse?
+		if ("".equals(strategy))
+			return null;
+
+		// Find via regex match
+		//   - \1 = comparator short name
+		//   - \2 = optional comma or opening bracket (designating successor or child)
+		//   - \3 = optional tail of string
+		Pattern pattern = Pattern.compile("(\\w+)([,(]?)(.*)");
+		Matcher matcher = pattern.matcher(strategy);
+		if (!matcher.matches())
+			throw new IllegalArgumentException("illegal strategy (sub)string \"" + strategy + "\"");
+
+		// Create TableRowComparator object via reflection
+		TableRowComparator comparator;
+		String packageName = TableRowComparator.class.getPackage().getName();
+		try {
+			// Concrete comparator must be in this package, end with "Comparator" and have a default constructor
+			Class<?> comparatorClass = Class.forName(packageName + "." + matcher.group(1) + "Comparator");
+			comparator = (TableRowComparator) comparatorClass.getConstructor().newInstance();
+		}
+		catch (Exception e) {
+			// Class/constructor not found or similar
+			throw new RuntimeException(e);
+		}
+
+		// Case 1: successor, no child
+		if (",".equals(matcher.group(2))) {
+			// Construct successor strategy from everything following the comma
+			comparator.setSuccessor(fromStrategy(matcher.group(3)));
+		}
+		// Case 2: child + (optional) successor
+		else if ("(".equals(matcher.group(2))) {
+			// Find closing bracket + optional following comma, taking care of nested brackets
+			int openBracketIndex = matcher.end(2);
+			int closeBracketIndex = matcher.start(3);
+			if (closeBracketIndex == -1)
+				throw new IllegalArgumentException("missing closing bracket in strategy (sub)string \"" + strategy + "\"");
+			int openBracketCount = 1;
+			while (openBracketCount > 0) {
+				char character = strategy.charAt(closeBracketIndex);
+				if (character == '(')
+					openBracketCount++;
+				else if (character == ')')
+					openBracketCount--;
+				if (++closeBracketIndex >= strategy.length())
+					throw new IllegalArgumentException("missing closing bracket in strategy (sub)string \"" + strategy + "\"");
+			}
+			// Construct child strategy from everything between the brackets
+			comparator.setChild(fromStrategy(strategy.substring(openBracketIndex, closeBracketIndex - 1)));
+			// Construct successor strategy from everything following the closing bracket + comma
+			if (closeBracketIndex < strategy.length())
+				comparator.setSuccessor(fromStrategy(strategy.substring(closeBracketIndex + 1)));
+		}
+		return comparator;
+	}
 
 	public final void setChild(TableRowComparator child) {
 		this.child = child;
