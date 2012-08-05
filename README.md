@@ -46,7 +46,7 @@ play with the application. Current configuration and extension points are:
     If you need new ranking criteria which do not exist as concrete subclasses
     of this class yet, just create your own subclass. Just copy & paste one of
     the other subclasses, e.g.
-    [`PointsComparator`](kriegaex/Soccer-Table/blob/master/SoccerTable/src/de/scrum_master/soccer/ranking/PointsComparator.java) or
+    [`PointsComparator`](/kriegaex/Soccer-Table/blob/master/SoccerTable/src/de/scrum_master/soccer/ranking/PointsComparator.java) or
     [`GoalsDifferenceComparator`](/kriegaex/Soccer-Table/blob/master/SoccerTable/src/de/scrum_master/soccer/ranking/GoalsDifferenceComparator.java),
     and change method `getComparisonValue`. In many cases it is as simple as
     changing the return value, i.e. a one-line edit. Most relevant criteria
