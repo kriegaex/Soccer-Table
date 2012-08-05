@@ -49,7 +49,7 @@ public class Config
 
 	private void printGroups() {
 		for (Group group : groups)
-			group.print(System.out, false, false, true);
+			group.print(System.out, false, false, false);
 	}
 
 	private void initialise_Primera_Division_2006_07() {
