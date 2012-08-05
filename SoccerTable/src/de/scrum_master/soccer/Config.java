@@ -17,6 +17,11 @@ public class Config
 	// Dummy groups (Euro 2012, group D, manipulated results) for special ranking situations
 	private static final boolean DUMMY_GROUPS = true;
 
+	// Print options
+	private static final boolean SHOW_TEAMS = false;
+	private static final boolean SHOW_MATCHES = false;
+	private static final boolean SHOW_SUBTABLES = false;
+
 	public static void main(String[] args) {
 		Config config = new Config();
 		config.initialiseGroups();
@@ -49,7 +54,7 @@ public class Config
 
 	private void printGroups() {
 		for (Group group : groups)
-			group.print(System.out, false, false, false);
+			group.print(System.out, SHOW_TEAMS, SHOW_MATCHES, SHOW_SUBTABLES);
 	}
 
 	private void initialise_Primera_Division_2006_07() {
