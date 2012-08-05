@@ -69,7 +69,7 @@ public abstract class TableRowComparator implements Comparator<Table.Row> {
 					openBracketCount++;
 				else if (character == ')')
 					openBracketCount--;
-				if (++closeBracketIndex >= strategy.length())
+				if (++closeBracketIndex > strategy.length())
 					throw new IllegalArgumentException("missing closing bracket in strategy (sub)string \"" + strategy + "\"");
 			}
 			// Construct child strategy from everything between the brackets
