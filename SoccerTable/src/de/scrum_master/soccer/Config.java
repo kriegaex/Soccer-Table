@@ -1,12 +1,11 @@
 package de.scrum_master.soccer;
 
+import static de.scrum_master.soccer.ranking.Ranking.*;
+
 import java.io.PrintStream;
 import java.util.GregorianCalendar;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import de.scrum_master.soccer.ranking.Ranking;
-import de.scrum_master.soccer.ranking.TableRowComparator;
 
 public class Config
 {
@@ -87,7 +86,7 @@ public class Config
 			"Vigo        ,1,2,2,3,1,2,3,2,1,1,1,1,1,3,1,2,2,1,2,2,0,2,0,3,1,0,0,2,1,2,2,1,1,1,---,0,0,1,1\n" +
 			"Sociedad    ,1,2,0,2,1,3,0,1,0,1,1,3,2,0,2,3,0,0,0,0,1,1,3,1,0,1,2,1,1,0,0,0,0,2,3,1,---,3,2\n" +
 			"Tarragona   ,1,3,1,5,1,0,1,1,0,3,1,0,0,2,1,1,1,3,2,2,4,0,2,3,0,0,2,3,2,1,0,1,2,3,1,2,1,3,---\n";
-		groups.add(Group.parseCrossTable("PD_2006_07", "Primera División 2006/07", rawData, Ranking.PRIMERA_DIVISION.comparator));
+		groups.add(Group.parseCrossTable("PD_2006_07", "Primera División 2006/07", rawData, PRIMERA_DIVISION.comparator));
 	}
 
 	private void initialise_Primera_Division_2007_08() {
@@ -120,7 +119,7 @@ public class Config
 			"Saragossa   ,2,2,4,1,1,2,2,1,2,0,1,1,2,2,1,1,1,0,2,2,1,0,3,3,0,3,1,1,2,3,3,0,2,1,---,3,1,3,0\n" +
 			"R. Murcia   ,1,1,0,1,3,5,1,1,0,0,2,1,1,4,0,1,0,2,1,0,1,2,4,0,0,0,0,3,0,1,1,0,2,0,2,1,---,2,3\n" +
 			"Levante     ,0,2,1,2,1,4,0,1,0,2,1,1,2,2,3,0,0,1,1,5,1,2,1,1,4,3,3,1,0,3,0,2,2,1,2,1,0,0,---\n";
-		groups.add(Group.parseCrossTable("PD_2007_08", "Primera División 2007/08", rawData, Ranking.PRIMERA_DIVISION.comparator));
+		groups.add(Group.parseCrossTable("PD_2007_08", "Primera División 2007/08", rawData, PRIMERA_DIVISION.comparator));
 	}
 
 	private void initialise_Primera_Division_2008_09() {
@@ -157,7 +156,7 @@ public class Config
 			"Betis       ,2,2,1,2,0,0,0,2,2,2,1,2,0,3,1,2,3,0,1,1,2,0,3,1,0,1,2,0,1,1,0,0,2,2,---,3,3,0,1\n" +
 			"Numancia    ,1,0,0,2,0,2,1,1,1,2,2,1,0,1,2,0,0,1,0,0,2,1,2,1,1,2,2,1,4,3,0,0,2,0,2,4,---,1,0\n" +
 			"Huelva      ,0,2,0,1,0,1,0,3,1,2,1,1,1,2,0,4,2,4,0,1,1,1,0,1,1,1,2,0,2,3,1,0,1,1,1,0,3,1,---\n";
-		groups.add(Group.parseCrossTable("PD_2008_09", "Primera División 2008/09", rawData, Ranking.PRIMERA_DIVISION.comparator));
+		groups.add(Group.parseCrossTable("PD_2008_09", "Primera División 2008/09", rawData, PRIMERA_DIVISION.comparator));
 	}
 
 	private void initialise_Primera_Division_2009_10() {
@@ -186,7 +185,7 @@ public class Config
 			"Teneriffa   ,0,5,1,5,0,0,1,2,1,0,3,2,2,2,1,0,1,1,0,1,4,1,2,1,2,2,1,3,2,1,2,1,2,2,---,0,0,1,0\n" +
 			"Valladolid  ,0,3,1,4,2,4,2,1,1,2,0,0,0,2,2,2,0,4,4,0,0,0,1,2,1,1,1,1,2,1,2,1,1,1,3,3,---,0,0\n" +
 			"Xerez       ,0,2,0,3,1,3,0,2,2,1,0,1,2,1,0,1,0,2,0,3,1,1,1,2,2,1,3,2,0,0,2,2,1,1,2,1,3,0,---\n";
-		groups.add(Group.parseCrossTable("PD_2009_10", "Primera División 2009/10", rawData, Ranking.PRIMERA_DIVISION.comparator));
+		groups.add(Group.parseCrossTable("PD_2009_10", "Primera División 2009/10", rawData, PRIMERA_DIVISION.comparator));
 	}
 
 	private void initialise_Primera_Division_2010_11() {
@@ -218,7 +217,7 @@ public class Config
 			"La Coruna   ,0,4,0,0,0,2,1,0,3,3,2,1,0,1,3,0,0,0,1,1,3,0,2,0,0,0,2,1,0,1,2,2,2,1,---,1,0,0,2\n" +
 			"H. Alicante ,0,3,1,3,1,2,2,2,2,0,0,1,4,1,0,0,0,4,0,0,4,1,2,3,2,1,2,1,3,1,0,0,2,2,1,0,---,1,2\n" +
 			"Almeria     ,0,8,1,1,0,3,0,0,0,1,1,3,2,2,3,2,3,2,1,1,1,1,1,1,1,1,2,2,0,1,2,3,3,1,1,1,1,1,---\n";
-		groups.add(Group.parseCrossTable("PD_2010_11", "Primera División 2010/11", rawData, Ranking.PRIMERA_DIVISION.comparator));
+		groups.add(Group.parseCrossTable("PD_2010_11", "Primera División 2010/11", rawData, PRIMERA_DIVISION.comparator));
 	}
 
 	private void initialise_Primera_Division_2011_12() {
@@ -248,11 +247,11 @@ public class Config
 			"Villarreal  ,1,1,0,0,2,2,2,1,0,1,0,3,1,1,2,0,2,2,2,2,1,1,1,2,1,0,0,0,2,0,2,2,3,1,---,3,0,1,1\n" +
 			"Gijon       ,0,3,0,1,0,1,2,1,1,1,3,2,1,1,2,3,1,0,1,1,1,2,2,1,2,1,1,2,2,1,1,2,2,0,2,3,---,0,0\n" +
 			"Santander   ,0,0,0,2,2,2,1,3,0,0,0,0,2,4,0,3,0,3,0,1,0,0,1,2,1,0,0,1,1,1,1,0,0,1,1,0,1,1,---\n";
-		groups.add(Group.parseCrossTable("PD_2011_12", "Primera División 2011/12", rawData, Ranking.PRIMERA_DIVISION.comparator));
+		groups.add(Group.parseCrossTable("PD_2011_12", "Primera División 2011/12", rawData, PRIMERA_DIVISION.comparator));
 	}
 
 	private void initialise_Euro_2012_Group_A() {
-		Group group = new Group("A", "Gruppe A", Ranking.EURO_2012.comparator);
+		Group group = new Group("A", "Gruppe A", EURO_2012.comparator);
 		groups.add(group);
 
 		group.addTeam(new Team("CZE", "Tschechien"));
@@ -293,7 +292,7 @@ public class Config
 	}
 
 	private void initialise_Euro_2012_Group_B() {
-		Group group = new Group("B", "Gruppe B", Ranking.EURO_2012.comparator);
+		Group group = new Group("B", "Gruppe B", EURO_2012.comparator);
 		groups.add(group);
 
 		group.addTeam(new Team("DEN", "Dänemark"));
@@ -334,7 +333,7 @@ public class Config
 	}
 
 	private void initialise_Euro_2012_Group_C() {
-		Group group = new Group("C", "Gruppe C", Ranking.EURO_2012.comparator);
+		Group group = new Group("C", "Gruppe C", EURO_2012.comparator);
 		groups.add(group);
 
 		group.addTeam(new Team("CRO", "Kroatien"));
@@ -375,7 +374,7 @@ public class Config
 	}
 
 	private void initialise_Euro_2012_Group_D() {
-		Group group = new Group("D", "Gruppe D", Ranking.EURO_2012.comparator);
+		Group group = new Group("D", "Gruppe D", EURO_2012.comparator);
 		groups.add(group);
 
 		group.addTeam(new Team("ENG", "England"));
@@ -416,7 +415,7 @@ public class Config
 	}
 
 	private void initialise_Dummy_1() {
-		Group group = new Group("X1", "Gruppe Dummy1", Ranking.EURO_2012.comparator);
+		Group group = new Group("X1", "Gruppe Dummy1", EURO_2012.comparator);
 		groups.add(group);
 
 		group.addTeam(new Team("ENG", "England"));       // #1
@@ -457,7 +456,7 @@ public class Config
 	}
 
 	private void initialise_Dummy_2() {
-		Group group = new Group("X2", "Gruppe Dummy2", Ranking.EURO_2012.comparator);
+		Group group = new Group("X2", "Gruppe Dummy2", EURO_2012.comparator);
 		groups.add(group);
 
 		group.addTeam(new Team("ENG", "England"));       // #1
@@ -498,7 +497,7 @@ public class Config
 	}
 
 	private void initialise_Dummy_3() {
-		Group group = new Group("X3", "Gruppe Dummy3", Ranking.EURO_2012.comparator);
+		Group group = new Group("X3", "Gruppe Dummy3", EURO_2012.comparator);
 		groups.add(group);
 
 		group.addTeam(new Team("ENG", "England"));       // #1
@@ -539,7 +538,7 @@ public class Config
 	}
 
 	private void initialise_Dummy_4() {
-		Group group = new Group("X4", "Gruppe Dummy4", Ranking.EURO_2012.comparator);
+		Group group = new Group("X4", "Gruppe Dummy4", EURO_2012.comparator);
 		groups.add(group);
 
 		group.addTeam(new Team("ENG", "England"));       // #2
