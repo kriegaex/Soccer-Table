@@ -22,7 +22,7 @@ follows:
     neither. If the strategy has a child as well as a successor, the child is
     called first and the successor only if the child strategy returns equality.
 
-  * Ranking strategies can nested (children) or chained (successors) to any
+  * Ranking strategies can be nested (children) or chained (successors) to any
     depth/length the ranking algorithm requires. Furthermore the same ranking
     criterion can occur multiple times at different nesting levels. For
     example, points can occur on top level and as a child criterion for direct
@@ -32,22 +32,24 @@ Currently configuration is done directly in the code, but it would be simple
 to read in configurations from the command line or config files. Feel free to
 play with the application. Current configuration and extension points are:
 
-  * Class `Config`: There you can edit static constants in order to influence
-    the level of detail for printing tables as well as the set of test data to
-    be processed. It is also the place to enter more test data or modify the
-    existing ones.
+  * Class [`Config`](/kriegaex/Soccer-Table/blob/master/SoccerTable/src/de/scrum_master/soccer/Config.java):
+    There you can edit static constants in order to influence the level of
+    detail for printing tables as well as the set of test data to be processed.
+    It is also the place to enter more test data or modify the existing ones.
 
-  * Class `Ranking`: There you can create new ranking strategies or modify
-    existing ones. See comments for [commit f3959256]
-    (/kriegaex/Soccer-Table/commit/f395925614be11001901ea780a48a0bb4ef2e667)
+  * Class [`Ranking`](/kriegaex/Soccer-Table/blob/master/SoccerTable/src/de/scrum_master/soccer/ranking/Ranking.java):
+    There you can create new ranking strategies or modify existing ones. See
+    comments for [commit f3959256](/kriegaex/Soccer-Table/commit/f395925614be11001901ea780a48a0bb4ef2e667)
     for a brief syntax description.
 
-  * Class `TableRowComparator`: If you need new ranking criteria which do not
-    exist as concrete subclasses of this class yet, just create your own
-    subclass. Just copy & paste one of the other subclasses, e.g.
-    `PointsComparator` or `GoalsDifferenceComparator`, and change method
-    `getComparisonValue`. In many cases it is as simple as changing the return
-    value, i.e. a one-line edit. Most relevant criteria used in (inter)national
-    leagues and tournaments should already exist, though. So most of the time
-    you will just use one of the existing instances of `Ranking` or maybe
-    configure a new one from existing criteria.
+  * Class [`TableRowComparator`](/kriegaex/Soccer-Table/blob/master/SoccerTable/src/de/scrum_master/soccer/ranking/TableRowComparator.java):
+    If you need new ranking criteria which do not exist as concrete subclasses
+    of this class yet, just create your own subclass. Just copy & paste one of
+    the other subclasses, e.g.
+    [`PointsComparator`](kriegaex/Soccer-Table/blob/master/SoccerTable/src/de/scrum_master/soccer/ranking/PointsComparator.java) or
+    [`GoalsDifferenceComparator`](/kriegaex/Soccer-Table/blob/master/SoccerTable/src/de/scrum_master/soccer/ranking/GoalsDifferenceComparator.java),
+    and change method `getComparisonValue`. In many cases it is as simple as
+    changing the return value, i.e. a one-line edit. Most relevant criteria
+    used in (inter)national leagues and tournaments should already exist,
+    though. So most of the time you will just use one of the existing instances
+    of `Ranking` or maybe configure a new one from existing criteria.
