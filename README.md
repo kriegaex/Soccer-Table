@@ -38,8 +38,9 @@ play with the application. Current configuration and extension points are:
     existing ones.
 
   * Class `Ranking`: There you can create new ranking strategies or modify
-    existing ones. See comments for commit f3959256 for a brief syntax
-    description.
+    existing ones. See comments for [commit f3959256]
+    (/kriegaex/Soccer-Table/commit/f395925614be11001901ea780a48a0bb4ef2e667)
+    for a brief syntax description.
 
   * Class `TableRowComparator`: If you need new ranking criteria which do not
     exist as concrete subclasses of this class yet, just create your own
