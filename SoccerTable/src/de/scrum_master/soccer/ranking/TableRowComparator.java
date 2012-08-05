@@ -9,7 +9,7 @@ import de.scrum_master.soccer.Match;
 import de.scrum_master.soccer.Table;
 import de.scrum_master.soccer.Table.Row;
 
-public abstract class TableRowComparator implements Comparator<Table.Row> {
+public abstract class TableRowComparator implements Comparator<Row> {
 	private TableRowComparator child;
 	private TableRowComparator successor;
 	private Table subTable;
