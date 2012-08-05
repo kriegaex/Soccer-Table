@@ -2,7 +2,6 @@ package de.scrum_master.soccer;
 
 import static de.scrum_master.soccer.ranking.Ranking.*;
 
-import java.io.PrintStream;
 import java.util.GregorianCalendar;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -17,10 +16,6 @@ public class Config
 	private static final boolean EURO_2012_GROUPS = true;
 	// Dummy groups (Euro 2012, group D, manipulated results) for special ranking situations
 	private static final boolean DUMMY_GROUPS = true;
-
-	// Assign non-null value to activate sub-table printing.
-	// Attention: sub-table might be printed multiple times. So this is just for tracing/debugging the system.
-	public static PrintStream DEBUG_STREAM = null;
 
 	public static void main(String[] args) {
 		Config config = new Config();
@@ -54,7 +49,7 @@ public class Config
 
 	private void printGroups() {
 		for (Group group : groups)
-			group.print(System.out);
+			group.print(System.out, false, false, true);
 	}
 
 	private void initialise_Primera_Division_2006_07() {

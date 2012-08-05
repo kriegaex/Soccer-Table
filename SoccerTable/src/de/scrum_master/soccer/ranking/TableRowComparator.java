@@ -1,10 +1,11 @@
 package de.scrum_master.soccer.ranking;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.scrum_master.soccer.Config;
 import de.scrum_master.soccer.Match;
 import de.scrum_master.soccer.Table;
 import de.scrum_master.soccer.Table.Row;
@@ -12,7 +13,6 @@ import de.scrum_master.soccer.Table.Row;
 public abstract class TableRowComparator implements Comparator<Row> {
 	private TableRowComparator child;
 	private TableRowComparator successor;
-	private Table subTable;
 
 	protected TableRowComparator(TableRowComparator child, TableRowComparator successor) {
 		this.child = child;
@@ -102,21 +102,22 @@ public abstract class TableRowComparator implements Comparator<Row> {
 		if (getComparisonValue(row1) > getComparisonValue(row2))
 			return 1;
 		if (child != null) {
-			subTable = new Table(child);
-			for (Row row : row1.getOuterTable().getRows()) {
+			Table mainTable = row1.getOuterTable();
+			Table subTable = new Table(child, mainTable);
+			for (Row row : mainTable.getRows()) {
 				if (getComparisonValue(row1) == getComparisonValue(row))
 					subTable.addTeam(row.getTeam());
 			}
-			for (Match match : row1.getOuterTable().getMatches()) {
+			for (Match match : mainTable.getMatches()) {
 				if (subTable.getRow(match.getHomeTeam()) != null && subTable.getRow(match.getGuestTeam()) != null)
 					subTable.addMatch(match);
 			}
 			subTable.refresh();
-			if (Config.DEBUG_STREAM != null) {
-				// Attention: sub-table might be printed multiple times, depending on how often 'compare' is called.
-				// So this is just for tracing/debugging the system, not anything beautiful.
-				subTable.print(Config.DEBUG_STREAM, "    ");
-				Config.DEBUG_STREAM.println();
+			if (mainTable.isShowSubTables()) {
+				ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+				PrintStream printStream = new PrintStream(byteArrayStream);
+				subTable.print(printStream, true);
+				mainTable.addDumpedSubTable(byteArrayStream.toString());
 			}
 			int result = child.compare(subTable.getRow(row1.getTeam()), subTable.getRow(row2.getTeam()));
 			if (result != 0)

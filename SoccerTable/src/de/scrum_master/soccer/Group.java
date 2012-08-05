@@ -113,11 +113,7 @@ class Group implements Comparable<Group> {
 		return null;
 	}
 
-	void print(PrintStream out) {
-		print(out, false, false);
-	}
-
-	void print(PrintStream out, boolean showTeams, boolean showMatches) {
+	void print(PrintStream out, boolean showTeams, boolean showMatches, boolean showSubTables) {
 		out.println(name);
 		out.println();
 		if (showTeams) {
@@ -136,7 +132,7 @@ class Group implements Comparable<Group> {
 			}
 			out.println();
 		}
-		table.print(out, "  ");
+		table.print(out, showSubTables);
 		out.println();
 	}
 

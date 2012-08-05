@@ -3,21 +3,32 @@ package de.scrum_master.soccer;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import de.scrum_master.soccer.ranking.TableRowComparator;
+import de.scrum_master.soccer.ranking.TeamIdComparator;
 
 public class Table
 {
-	private List<Row>          rows        = new ArrayList<Row>();
+	private List<Row>          rows            = new ArrayList<Row>();
 	private TableRowComparator comparator;
-	private SortedSet<Team>    teams       = new TreeSet<Team>();
-	private SortedSet<Match>   matches     = new TreeSet<Match>();
+	private SortedSet<Team>    teams           = new TreeSet<Team>();
+	private SortedSet<Match>   matches         = new TreeSet<Match>();
+	private boolean            showSubTables   = false;
+	private Set<String>        dumpedSubTables = new LinkedHashSet<String>();
+	private String             indent          = "";
 
 	public Table(TableRowComparator comparator) {
 		this.comparator = comparator;
+	}
+
+	public Table(TableRowComparator comparator, Table parent) {
+		this(comparator);
+		indent = parent.indent + "    ";
 	}
 
 	public Table(Iterable<Team> teams, Iterable<Match> matches, TableRowComparator comparator) {
@@ -42,8 +53,11 @@ public class Table
 		matches.add(match);
 	}
 
-	public void print(PrintStream out, String indent) {
+	public void print(PrintStream out, boolean showSubTables) {
+		this.showSubTables = showSubTables;
 		refresh();
+		for (String dumpedSubTable : dumpedSubTables)
+			out.println(dumpedSubTable);
 		out.println(indent + "Pos  Team          Pld    W    D    L   GF   GA   GD   GW  Pts");
 		out.println(indent + "---  ------------  ---  ---  ---  ---  ---  ---  ---  ---  ---");
 		for (Row row : rows)
@@ -53,7 +67,11 @@ public class Table
 	public void refresh() {
 		for (Row row : rows)
 			row.refresh();
-		Collections.sort(rows, comparator);
+		dumpedSubTables.clear();
+		// Update table ranking. Make sure to maintain alphabetical order by team ID for mathematically equal rows.
+		// Otherwise there might be duplicate subtables in member dumpedSubTables, just with identical teams in
+		// different order.
+		Collections.sort(rows, new TeamIdComparator(comparator));
 		Row previousRow = null;
 		int currentRank = 0;
 		int nextRank = 0;
@@ -90,6 +108,14 @@ public class Table
 
 	public SortedSet<Match> getMatches() {
 		return matches;
+	}
+
+	public boolean isShowSubTables() {
+		return showSubTables;
+	}
+
+	public void addDumpedSubTable(String dumpedSubTable) {
+		dumpedSubTables.add(dumpedSubTable);
 	}
 
 	public class Row {
